@@ -5,6 +5,10 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+// session
+const session = require('koa-generic-session')
+const redisStore = require('koa-redis')
+const { REDIS_CONF } = require('./src/conf/db')
 
 const index = require('./src/routes/index')
 const users = require('./src/routes/users')
@@ -30,6 +34,25 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+
+
+//session 配置
+app.keys = ['weibo']
+app.use(session({
+  key: 'weibo.sid', // cookie name 默认是koa.sid
+  prefix: 'weibo:sess:', // redis key的前缀 默认是koa.sess:
+  cookie: {
+    path: '/',
+    httpOnly: true, // 只能server修改
+    maxAge: 60 * 60 * 1000, // 过期时间 单位ms
+  },
+  // ttl: 60 * 60 * 1000, // 过期时间 单位ms
+  store: redisStore({
+    all: `${REDIS_CONF.host}:${REDIS_CONF.port}`,
+  }),
+}))
+
+
 
 // routes
 app.use(index.routes(), index.allowedMethods())
