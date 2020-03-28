@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>EJS Welcome to <%= title %></p>
+    <p> <%= locals.name %></p>
+
+    <p> <% if (flag) { %></p>
+      true
+    <p> <% } else { %></p>
+        false
+      <p> <% } %></p>
+
+    <%- include('./components/name', {
+      name
+    }) %>
+
+    <%- include('./components/fruit', {
+      list
+    }) %>
+
+  </body>
+</html>
