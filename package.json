@@ -9,11 +9,12 @@
     "test": "cross-env NODE_ENV=test jest --runInBand --forceExit --colors"
   },
   "dependencies": {
+    "@alicloud/pop-core": "^1.7.9",
     "cross-env": "^7.0.2",
     "debug": "^4.1.1",
     "ejs": "2.7.4",
     "koa": "^2.7.0",
-    "koa-bodyparser": "^4.2.1",
+    "koa-bodyparser": "^4.3.0",
     "koa-convert": "^1.2.0",
     "koa-generic-session": "^2.0.4",
     "koa-json": "^2.0.2",
