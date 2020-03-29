@@ -1,5 +1,5 @@
 /**
- * @description jest serve
+ * @description jest server
  * @author zzw
  */
 
