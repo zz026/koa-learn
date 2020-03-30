@@ -12,11 +12,11 @@ router.get('/bar', function (ctx, next) {
 })
 
 router.post('/sms', async (ctx, next) => {
-  const params = JSON.parse(ctx.request.body)
+  console.log('ctx.request.body', ctx.request.body)
+  const params = JSON.parse(JSON.stringify(ctx.request.body))
   const code = newCode()
-  console.log('params', params)
   console.log('code', code)
-  if (params.phone) {
+  try {
     const smsResult = await SendSms(
       params.phone,
       code
@@ -25,12 +25,12 @@ router.post('/sms', async (ctx, next) => {
     ctx.body = {
       code: 0,
       phone: params.phone,
-      // smsResult: smsResult
+      msg: smsResult.Message
     }
-  } else {
+  } catch(err) {
     ctx.body = {
       code: 11,
-      msg: '手机号不存在'
+      msg: err
     }
   }
 })
