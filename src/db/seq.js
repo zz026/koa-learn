@@ -1,15 +1,22 @@
 const Sequelize = require('sequelize');
+const { SQL_CONF } = require('../conf/db')
+const { ENV } = require('../utils/env')
 
-const seq = new Sequelize(
-	'test', // 数据库名
-	'root',   // 用户名
-	'989898',   // 用户密码
-	{
-		'dialect': 'mysql',  // 数据库使用mysql
-		'host': 'localhost', // 数据库服务器ip
-		'port': 3306,        // 数据库服务器端口
-	}
-);
+const { host, database, user, passWord  } = SQL_CONF
+
+const conf = {
+  'dialect': 'mysql',  // 数据库使用mysql
+  host, // 数据库服务器ip
+  'port': 3306,        // 数据库服务器端口
+}
+
+// 测试环境关闭日志
+if (ENV === 'test') {
+  conf.logging = () => {}
+}
+
+
+const seq = new Sequelize(database, user, passWord, conf);
 
 seq
   .authenticate()
