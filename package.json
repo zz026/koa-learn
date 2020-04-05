@@ -7,6 +7,7 @@
     "dev": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon bin/www",
     "prod": "cross-env NODE_ENV=prod pm2 start bin/www",
     "lint": "eslint --ext .js ./src",
+    "precommit": "lint-staged && npm run lint",
     "test": "cross-env NODE_ENV=test jest --runInBand --forceExit --colors"
   },
   "dependencies": {
@@ -39,7 +40,7 @@
     "supertest": "^4.0.2"
   },
   "lint-stagedz": {
-    "src/**/*.{js,}": [
+    "src/**/*.js": [
       "eslint --fix",
       "git add"
     ]
