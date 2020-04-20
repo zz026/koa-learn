@@ -1,8 +1,12 @@
+/*
+ @description 阿里云发送短信 需填入accessKeyId和accessKeySecret
+ @author zzw
+*/
 const Core = require('@alicloud/pop-core');
 
 const client = new Core({
-  accessKeyId: 'LTAI4Fmf9KTTB4oBNXJV3mxQ',
-  accessKeySecret: 'Ia1FBOHuDPmdoM535FfgaELRdcty8X',
+  accessKeyId: 'accessKeyId', // 需填入自己的accessKeyId
+  accessKeySecret: 'accessKeySecret', // 需填入自己的accessKeySecret
   endpoint: 'https://dysmsapi.aliyuncs.com',
   apiVersion: '2017-05-25'
 });
