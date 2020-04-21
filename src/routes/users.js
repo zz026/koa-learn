@@ -14,8 +14,11 @@ router.get('/bar', function (ctx, next) {
 router.post('/login', async (ctx, next) => {
   const { userName, password } = ctx.request.body
   ctx.body = {
-    userName,
-    password
+    code: 0,
+    data: {
+      userName,
+      password
+    }
   }
 })
 
