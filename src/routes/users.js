@@ -7,10 +7,20 @@ router.get('/', function (ctx, next) {
   ctx.body = 'this is a users response!'
 })
 
-router.get('/bar', function (ctx, next) {
-  ctx.body = 'this is a users/bar response'
+// 注册
+router.post('/register', async (ctx, next) => {
+  const { userName, nickName, password } = ctx.request.body
+  ctx.body = {
+    code: 0,
+    data: {
+      userName,
+      nickName,
+      password
+    }
+  }
 })
 
+// 登录
 router.post('/login', async (ctx, next) => {
   const { userName, password } = ctx.request.body
   ctx.body = {
@@ -22,6 +32,7 @@ router.post('/login', async (ctx, next) => {
   }
 })
 
+// 发送短信
 router.post('/sms', async (ctx, next) => {
   console.log('ctx.request.body', ctx.request.body)
   const params = ctx.request.body

@@ -15,14 +15,6 @@ if (ENV === 'test') {
   conf.logging = () => {}
 }
 
-
 const seq = new Sequelize(database, user, passWord, conf);
 
-seq
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
+module.exports = seq

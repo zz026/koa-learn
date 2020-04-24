@@ -1,0 +1,6 @@
+/* jquery.validate error提示文字 */
+form label.error {
+  color: #d60808;
+  font-size: 12px;
+  margin-top: 6px;
+}

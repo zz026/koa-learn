@@ -1,0 +1,119 @@
+<%- include('./components/header', {
+	title: '注册'
+}) %>
+<style>
+	form {
+		width: 500px;
+		margin: 50px auto;
+	}
+</style>
+<form id="register-form">
+	<div class="form-group">
+		<label for="userName">账号</label>
+		<input id="userName" type="text" class="form-control" name="userName" placeholder="请输入账号" autocomplete="off">
+	</div>
+	<div class="form-group">
+		<label for="nickName">昵称</label>
+		<input type="text" class="form-control" name="nickName" placeholder="请输入昵称" autocomplete="off">
+	</div>
+	<div class="form-group">
+		<label for="password">密码</label>
+		<input type="password" class="form-control" name="password" placeholder="请输入密码" autocomplete="off">
+	</div>
+	<div class="form-group">
+		<label for="confirmPassword">再次输入密码</label>
+		<input type="password" class="form-control" name="confirmPassword" placeholder="请输入密码" autocomplete="off">
+	</div>
+	<div style="text-align: center;">
+		<button type="submit" class="btn btn-primary" id="btn-submit">注 册</button>
+	</div>
+</form>
+
+<%- include('./components/footer.ejs') %>
+
+<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+
+<script>
+	$(function () {
+		// 增加表单验证
+		$("#register-form").validate({
+			debug: true, // 调试模式取消submit的默认提交功能   
+			rules: {
+				userName: {
+					required: true, // 必填项
+					rangelength: [2, 8]
+				},
+				nickName: {
+					required: true,
+					rangelength: [2, 8]
+				},
+				password: {
+					required: true,
+					rangelength: [6, 10]
+				},
+				confirmPassword: {
+					required: true,
+					equalTo: 'input[name="password"]'
+				},
+			},
+			// 验证失败的提示信息
+			messages: {
+				confirmPassword: {
+					equalTo: "两次密码不相同"
+				},
+			},
+			submitHandler: function(form){ 
+				var userName = $('input[name=userName]').val()
+				var nickName = $('input[name=nickName]').val()
+				var password = $('input[name=password]').val()
+				$.post('/api/user/register', {
+					userName,
+					nickName,
+					password
+				}, function (res) {
+					if (res.code === 0) {
+						toastr.success('注册成功！');
+					}
+				})
+			}, 
+		});
+
+		// 验证账号名唯一
+		$('#userName').on('blur', function () {
+			var value = $(this).val()
+			console.log('value', value)
+		})
+
+
+		// $('#btn-submit').on('click', function (e) {
+		// 	e.preventDefault()
+
+		// 	var userName = $('input[name=userName]').val()
+		// 	var nickName = $('input[name=nickName]').val()
+		// 	var password = $('input[name=password]').val()
+		// 	var passwordAgain = $('input[name=passwordAgain]').val()
+		// 	if (!userName) {
+		// 		return toastr.warning('请输入账号');
+		// 	}
+		// 	if (!password) {
+		// 		return toastr.warning('请输入密码');
+		// 	}
+		// 	if (!password.length < 6) {
+		// 		return toastr.warning('密码必须大于6位数');
+		// 	}
+		// 	if (password !== passwordAgain) {
+		// 		return toastr.warning('两次密码不一致');
+		// 	}
+		// 	$.post('/api/user/login', {
+		// 		userName,
+		// 		password
+		// 	}, function (res) {
+		// 		if (res.code === 0) {
+		// 			toastr.success('登录成功！');
+		// 		}
+		// 	})
+		// })
+
+	})
+</script>
