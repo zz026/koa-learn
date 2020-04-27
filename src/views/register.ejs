@@ -50,6 +50,7 @@
 
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+<script src="/js/request.js"></script>
 
 <script>
 	$(function () {
@@ -59,7 +60,7 @@
 			rules: {
 				userName: {
 					required: true, // 必填项
-					rangelength: [2, 8]
+					rangelength: [2, 15]
 				},
 				nickName: {
 					required: true,
@@ -67,7 +68,7 @@
 				},
 				password: {
 					required: true,
-					rangelength: [6, 10]
+					rangelength: [6, 16]
 				},
 				confirmPassword: {
 					required: true,
@@ -96,12 +97,12 @@
 				var nickName = $('input[name=nickName]').val()
 				var password = $('input[name=password]').val()
 				var gender = $('input[name=gender]:checked').val()
-				$.post('/api/user/register', {
+				ajax.post('/api/user/register', {
 					userName,
 					nickName,
 					password,
-					gender
-				}, function (res) {
+					gender: Number(gender)
+				}, function(res) {
 					if (res.code === 0) {
 						toastr.success('注册成功！');
 					} else {
@@ -115,9 +116,9 @@
 		$('#userName').on('blur', function () {
 			var value = $(this).val()
 			if (value && value.length >= 2) {
-				$.post('/api/user/checkName', {
+				ajax.post('/api/user/checkName', {
 					userName: $(this).val()
-				}, function (res) {
+				}, function(res) {
 					if (res.code !== 0) {
 						toastr.error(res.msg)
 						$('#sameName').fadeIn()
@@ -127,36 +128,5 @@
 				})
 			}
 		})
-
-
-		// $('#btn-submit').on('click', function (e) {
-		// 	e.preventDefault()
-
-		// 	var userName = $('input[name=userName]').val()
-		// 	var nickName = $('input[name=nickName]').val()
-		// 	var password = $('input[name=password]').val()
-		// 	var passwordAgain = $('input[name=passwordAgain]').val()
-		// 	if (!userName) {
-		// 		return toastr.warning('请输入账号');
-		// 	}
-		// 	if (!password) {
-		// 		return toastr.warning('请输入密码');
-		// 	}
-		// 	if (!password.length < 6) {
-		// 		return toastr.warning('密码必须大于6位数');
-		// 	}
-		// 	if (password !== passwordAgain) {
-		// 		return toastr.warning('两次密码不一致');
-		// 	}
-		// 	$.post('/api/user/login', {
-		// 		userName,
-		// 		password
-		// 	}, function (res) {
-		// 		if (res.code === 0) {
-		// 			toastr.success('登录成功！');
-		// 		}
-		// 	})
-		// })
-
 	})
 </script>

@@ -3,17 +3,13 @@ const router = require('koa-router')()
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
     title: 'Hello Koa 2!',
-    name: '张三',
+    name: '微博',
     flag: false,
     list: [
       { id: 1, name: '苹果' },
       { id: 2, name: '香蕉' }
     ]
   })
-})
-
-router.get('/string', async (ctx, next) => {
-  ctx.body = 'koa2 string'
 })
 
 router.get('/json', async (ctx, next) => {

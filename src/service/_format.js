@@ -1,5 +1,5 @@
 /**
- * @deprecated 数据格式化
+ * @description 数据格式化
  * @author zzw
 */
 

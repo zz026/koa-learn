@@ -1,12 +1,12 @@
 /**
- * @deprecated user controller
+ * @description user controller
  */
 const { getUserInfo, createUser } = require('../service/user')
 const { SuccessModal, ErrorModal } = require('../model/ResponseModal')
 const { hasSameUserNameCode } = require('../model/ErrorCode')
 
 /**
-* @deprecated 用户名是否存在
+* @description 用户名是否存在
 * @param {string} userName 用户名
 */
 async function checkName(userName) {
@@ -20,7 +20,7 @@ async function checkName(userName) {
 }
 
 /**
- * @deprecated 注册用户
+ * @description 注册用户
  * @author zzw
 */
 async function registerUser(userInfo) {
@@ -40,9 +40,7 @@ async function registerUser(userInfo) {
       code: 10002,
       msg: e.errors[0].message
     })
-    // return err.errors[0].message
   }
-  // console.log('user', user)
 }
 
 module.exports = {

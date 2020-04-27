@@ -1,5 +1,5 @@
 /**
- * @deprecated 基础模型
+ * @description 基础模型
  * @author zzw
 */
 class BaseModal {
@@ -13,7 +13,7 @@ class BaseModal {
 }
 
 /**
- * @deprecated 成功模型
+ * @description 成功模型
  * @author zzw
  */
 class SuccessModal extends BaseModal {
@@ -27,14 +27,14 @@ class SuccessModal extends BaseModal {
 }
 
 /**
- * @deprecated 失败模型
+ * @description 失败模型
  * @author zzw
 */
 class ErrorModal extends BaseModal {
   constructor({ code, msg }) {
     super({
       code,
-      msg: msg.replace(/must be unique/ , '必须唯一!')
+      msg: typeof msg === 'string' ? msg.replace(/must be unique/ , '必须唯一!') : msg
     })
   }
 }

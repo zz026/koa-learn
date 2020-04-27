@@ -1,5 +1,5 @@
 /**
- * @deprecated user service
+ * @description user service
  * @author zzw
  */
 
@@ -7,7 +7,7 @@ const { User } = require('../db/model/index')
 const doCrypto = require('../utils/crypto')
 
 /**
- * @deprecated 获取用户信息
+ * @description 获取用户信息
  * @param {string} userName 用户名
  * @param {string} password 密码
  */
@@ -30,7 +30,7 @@ async function getUserInfo(userName, password) {
 }
 
 /**
- * @deprecated 注册 创建用户
+ * @description 注册 创建用户
  * @param {object} userInfo 用户对象
  */
 async function createUser({ userName, password, nickName, gender }) {
