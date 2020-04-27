@@ -3,8 +3,18 @@
 }) %>
 <style>
 	form {
-		width: 500px;
+		max-width: 500px;
 		margin: 50px auto;
+		padding: 30px;
+	}
+	form .form-group input[type="radio"] {
+		margin: 0 4px 0 10px;
+	}
+	#sameName {
+		display: none;
+		color: #d60808;
+		font-size: 12px;
+		margin-bottom: 10px;
 	}
 </style>
 <form id="register-form">
@@ -12,6 +22,7 @@
 		<label for="userName">账号</label>
 		<input id="userName" type="text" class="form-control" name="userName" placeholder="请输入账号" autocomplete="off">
 	</div>
+	<div id="sameName">账号已存在</div>
 	<div class="form-group">
 		<label for="nickName">昵称</label>
 		<input type="text" class="form-control" name="nickName" placeholder="请输入昵称" autocomplete="off">
@@ -24,8 +35,14 @@
 		<label for="confirmPassword">再次输入密码</label>
 		<input type="password" class="form-control" name="confirmPassword" placeholder="请输入密码" autocomplete="off">
 	</div>
-	<div style="text-align: center;">
-		<button type="submit" class="btn btn-primary" id="btn-submit">注 册</button>
+	<div class="form-group">
+		<label for="gender">性别</label>
+		<input type="radio" name="gender" value="1">男
+		<input type="radio" name="gender" value="2">女
+		<input type="radio" name="gender" value="3">保密
+	</div>
+	<div style="text-align:center;margin-top:50px;">
+		<button type="submit" class="btn btn-primary" id="btn-submit" style="width:100%;">注 册</button>
 	</div>
 </form>
 
@@ -38,7 +55,7 @@
 	$(function () {
 		// 增加表单验证
 		$("#register-form").validate({
-			debug: true, // 调试模式取消submit的默认提交功能   
+			// debug: true, // 调试模式取消submit的默认提交功能   
 			rules: {
 				userName: {
 					required: true, // 必填项
@@ -56,6 +73,9 @@
 					required: true,
 					equalTo: 'input[name="password"]'
 				},
+				gender: {
+					required: true,
+				},
 			},
 			// 验证失败的提示信息
 			messages: {
@@ -63,17 +83,29 @@
 					equalTo: "两次密码不相同"
 				},
 			},
+			errorPlacement: function (error, element) { // 指定错误信息位置
+				if (element.is(':radio') || element.is(':checkbox')) { // 如果是radio或checkbox
+					var eid = element.attr('name'); // 获取元素的name属性
+					error.appendTo(element.parent()); // 将错误信息添加当前元素的父结点后面
+				} else {
+					error.insertAfter(element);
+				}
+			},
 			submitHandler: function(form){ 
 				var userName = $('input[name=userName]').val()
 				var nickName = $('input[name=nickName]').val()
 				var password = $('input[name=password]').val()
+				var gender = $('input[name=gender]:checked').val()
 				$.post('/api/user/register', {
 					userName,
 					nickName,
-					password
+					password,
+					gender
 				}, function (res) {
 					if (res.code === 0) {
 						toastr.success('注册成功！');
+					} else {
+						toastr.error(res.msg)
 					}
 				})
 			}, 
@@ -82,7 +114,18 @@
 		// 验证账号名唯一
 		$('#userName').on('blur', function () {
 			var value = $(this).val()
-			console.log('value', value)
+			if (value && value.length >= 2) {
+				$.post('/api/user/checkName', {
+					userName: $(this).val()
+				}, function (res) {
+					if (res.code !== 0) {
+						toastr.error(res.msg)
+						$('#sameName').fadeIn()
+					} else {
+						$('#sameName').fadeOut()
+					}
+				})
+			}
 		})
 
 

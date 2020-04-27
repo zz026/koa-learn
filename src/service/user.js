@@ -3,7 +3,8 @@
  * @author zzw
  */
 
-const { User } =  require('../db/model/index')
+const { User } = require('../db/model/index')
+const doCrypto = require('../utils/crypto')
 
 /**
  * @deprecated 获取用户信息
@@ -28,6 +29,22 @@ async function getUserInfo(userName, password) {
   return result.dataValues
 }
 
+/**
+ * @deprecated 注册 创建用户
+ * @param {object} userInfo 用户对象
+ */
+async function createUser({ userName, password, nickName, gender }) {
+  const result = await User.create({
+    userName,
+    password: doCrypto(password),
+    nickName,
+    gender,
+  })
+  return result.dataValues
+}
+
+
 module.exports = {
-  getUserInfo
+  getUserInfo,
+  createUser
 }

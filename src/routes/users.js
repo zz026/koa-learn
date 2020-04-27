@@ -1,23 +1,24 @@
 const router = require('koa-router')()
 const SendSms = require('../utils/sms')
 const newCode = require('../utils/code')
+const { checkName, registerUser } = require('../controller/user')
+// 前缀
 router.prefix('/api/user')
 
 router.get('/', function (ctx, next) {
-  ctx.body = 'this is a users response!'
+  ctx.body = 'this is a user response!'
+})
+
+// 检查用户名
+router.post('/checkName', async (ctx, next) => {
+  const { userName } = ctx.request.body
+  ctx.body = await checkName(userName)
 })
 
 // 注册
 router.post('/register', async (ctx, next) => {
-  const { userName, nickName, password } = ctx.request.body
-  ctx.body = {
-    code: 0,
-    data: {
-      userName,
-      nickName,
-      password
-    }
-  }
+  const { userName, nickName, password, gender } = ctx.request.body
+  ctx.body = await registerUser({ userName, nickName, password, gender })
 })
 
 // 登录

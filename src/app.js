@@ -5,15 +5,19 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+// 密钥
+const { Session_SCERET_KEY } = require('./conf/sceretKey')
 // session
 const session = require('koa-generic-session')
 const redisStore = require('koa-redis')
 const { REDIS_CONF } = require('./conf/db')
-
+// api路由
 const index = require('./routes/index')
 const users = require('./routes/users')
+// 页面路由
 const userPage = require('./routes/views/userPage')
 const errorPage = require('./routes/views/errorPage')
+
 
 // error handler
 onerror(app)
@@ -39,7 +43,7 @@ app.use(async (ctx, next) => {
 
 
 //session 配置
-app.keys = ['weibo']
+app.keys = [Session_SCERET_KEY]
 app.use(session({
   key: 'weibo.sid', // cookie name 默认是koa.sid
   prefix: 'weibo:sess:', // redis key的前缀 默认是koa.sess:
