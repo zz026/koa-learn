@@ -10,6 +10,7 @@ const {
   userPsdErrorCode,
 } = require('../model/ErrorCode')
 const doCrypto = require('../utils/crypto')
+// const { set } = require('../cache/_redis')
 
 /**
 * @description 用户名是否存在
@@ -52,17 +53,21 @@ async function registerUser(userInfo) {
 /**
  * @description 登录login
  * @author zzw
-*/
-async function loginUser(userName, password) {
+ * @param {Object} ctx koa2 ctx
+ * @param {string} userName 用户名
+ * @param {string} password 密码
+ */
+async function loginUser(ctx, userName, password) {
   const userInfo = await getUserInfo(userName, password)
   // 用户不存在
   if (!userInfo) {
     return new ErrorModal(userNameErrorCode)
   }
   // 密码一致
-  console.log(userInfo)
   if (userInfo.password === doCrypto(password)) {
     delete userInfo.password
+    // 用户信息存在session
+    ctx.session.userInfo = userInfo
     return new SuccessModal(userInfo)
   } else {
     return new ErrorModal(userPsdErrorCode)

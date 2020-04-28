@@ -1,5 +1,7 @@
 	<%- include('./components/header', { title: '登录' }) %>
 
+	<%- include('./components/nav', { userInfo: locals.userInfo }) %>
+
 	<style>
 		form {
 			width: 500px;
@@ -14,22 +16,25 @@
 			padding: 0 4px;
 		}
 	</style>
-	<form id="login-form">
-		<div class="form-group">
-			<label for="userName">手机号</label>
-			<input type="text" class="form-control" name="userName" placeholder="请输入手机号" autocomplete="off">
-		</div>
-		<div class="form-group">
-			<label for="password">密码</label>
-			<input type="password" class="form-control" name="password" placeholder="请输入密码" autocomplete="off">
-		</div>
-		<div style="text-align: center;">
-			<button type="submit" class="btn btn-primary" id="btn-submit">登 录</button>
-		</div>
-		<div class="go-register">
-			还无账号？前往<a href="/user/register">注册</a>!
-		</div>
-	</form>
+
+	<div class="container">
+		<form id="login-form">
+			<div class="form-group">
+				<label for="userName">手机号</label>
+				<input type="text" class="form-control" name="userName" placeholder="请输入手机号" autocomplete="off">
+			</div>
+			<div class="form-group">
+				<label for="password">密码</label>
+				<input type="password" class="form-control" name="password" placeholder="请输入密码" autocomplete="off">
+			</div>
+			<div style="text-align: center;">
+				<button type="submit" class="btn btn-primary" id="btn-submit">登 录</button>
+			</div>
+			<div class="go-register">
+				还无账号？前往<a href="/user/register">注册</a>!
+			</div>
+		</form>
+	</div>
 
 	<%- include('./components/footer.ejs') %>
 
@@ -38,8 +43,7 @@
 
 	<script>
 		$(function() {
-
-				// 增加表单验证
+			// 增加表单验证
 			$("#login-form").validate({
 				// debug: true, // 调试模式取消submit的默认提交功能   
 				rules: {
@@ -61,13 +65,14 @@
 					}, function(res) {
 						if (res.code === 0) {
 							toastr.success('登录成功！');
-							console.log('res', res)
+							setTimeout(() => {
+								window.location.href = '/'
+							}, 2000);
 						} else {
 							toastr.error(res.msg)
 						}
 					})
 				}, 
 			});
-			
 		})
 	</script>

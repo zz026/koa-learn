@@ -31,12 +31,14 @@ th,td {
 /* custom */
 a {
 	outline:none;
-	color:#16418a;
-	text-decoration:none;
-	-webkit-backface-visibility:hidden;
+	color:#d60808;
+	cursor: pointer;
 }
 a:focus {
 	outline:none;
+}
+a:hover {
+	color:#d60808;
 }
 input:focus,select:focus,textarea:focus {
 	outline:-webkit-focus-ring-color auto 0;

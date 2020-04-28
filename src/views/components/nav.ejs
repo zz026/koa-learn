@@ -1,0 +1,37 @@
+<style>
+  #nav {
+    padding: 0 30px;
+    line-height: 50px;
+    color: #000;
+    box-shadow: 0 0 1px 0px rgba(0,0,0,0.3), 0 0 6px 2px rgba(0,0,0,0.15);
+    background: rgba(255,255,255,0.94);
+    border-top: 2px solid #fa7d3c;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  #nav h1 {
+    float: left;
+  }
+  #nav .right {
+    float: right;
+  }
+</style>
+
+<nav id="nav">
+  <div class="w clearfix">
+    <h1>仿微博</h1>
+    
+    <div class="right">
+      <!-- 已登录 -->
+      <div> <% if (locals.userInfo && locals.userInfo.userName) { %></div>
+        <div>
+         &lt; <%= locals.userInfo.nickName %>  &gt; 您好!
+        </div>
+      <div> <% } else { %></div>
+        <a href="/user/login">点击登录</a>
+      <div> <% } %></div>
+    </div>
+  </div>
+</nav>

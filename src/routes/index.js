@@ -2,6 +2,12 @@ const router = require('koa-router')()
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
+    userInfo: ctx.session.userInfo || {}
+  })
+})
+
+router.get('/demo', async (ctx, next) => {
+  await ctx.render('demo', {
     title: 'Hello Koa 2!',
     name: '微博',
     flag: false,

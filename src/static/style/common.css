@@ -1,3 +1,29 @@
+body {
+  font-size: 14px;
+}
+/* 版心 */
+.w {
+  width: 1200px;
+  margin: 0 auto;
+  background-color: #ebeef5;
+}
+
+.container {
+  min-height: calc(100vh - 230px);
+  margin-top: 60px;
+}
+
+/* 清除浮动 */
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+
 /* jquery.validate error提示文字 */
 form label.error {
   color: #d60808;

@@ -30,14 +30,13 @@ router.post('/register', getValidate(userValidate), async (ctx, next) => {
 // 登录
 router.post('/login', async (ctx, next) => {
   const { userName, password } = ctx.request.body
-  ctx.body = await loginUser(userName, password)
+  ctx.body = await loginUser(ctx, userName, password)
 })
 
 // 发送短信
 router.post('/sms', async (ctx, next) => {
   console.log('ctx.request.body', ctx.request.body)
   const params = ctx.request.body
-  // const params = JSON.parse(JSON.stringify(ctx.request.body))
   const code = newCode()
   console.log('code', code)
   try {

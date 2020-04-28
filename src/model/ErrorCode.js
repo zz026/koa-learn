@@ -18,5 +18,9 @@ module.exports = {
   userPsdErrorCode: {
     code: 10004,
     msg: '密码错误'
+  },
+  noLoginCode: {
+    code: 10005,
+    msg: '尚未登录'
   }
 }

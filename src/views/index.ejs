@@ -4,27 +4,14 @@
       description: '首页'
     }) %>
 
-    <h1><%= title %></h1>
-    <p>EJS Welcome to <%= title %></p>
-    <p> <%= locals.name %></p>
-
-    <p> <% if (flag) { %></p>
-    true
-    <p> <% } else { %></p>
-    false
-    <p> <% } %></p>
-
-    <%- include('./components/name', {
-      name
-    }) %>
-
-    <%- include('./components/fruit', {
-      list
-    }) %>
-
-    <hr />
+    <%- include('./components/nav', { userInfo: locals.userInfo }) %>
+    
+  	<div class="container">
+      广场首页
+    </div>
+<!-- 
     <a href="/user/register">注册</a>
-    <a href="/user/login">登录</a>
+    <a href="/user/login">登录</a> -->
 
 
     <%- include('./components/footer') %>
