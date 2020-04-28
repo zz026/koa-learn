@@ -13,8 +13,8 @@
   })
 
   test('测试登录', async () => {
-    const res = await server.post('/json2').send({
-      userName: 'zhangsan',
+    const res = await server.post('/login').send({
+      userName: '13715016626',
       passWord: '123456'
     })
     expect(res.body).toEqual({

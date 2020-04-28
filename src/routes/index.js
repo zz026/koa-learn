@@ -1,4 +1,5 @@
 const router = require('koa-router')()
+const { checkLogin } = require('../middlewares/checkLogin')
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
@@ -30,6 +31,12 @@ router.get('/json', async (ctx, next) => {
 router.get('/json2', async (ctx, next) => {
   ctx.body = {
     title: 'koa2 json2',
+  }
+})
+
+router.post('/login', checkLogin, async (ctx, next) => {
+  ctx.body = {
+    title: '登录成功',
   }
 })
 
