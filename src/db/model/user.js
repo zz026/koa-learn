@@ -29,7 +29,7 @@ const User = seq.define('user', {
     defaultValue: 3,
     comment: '性别 (1男 2女3 保密)',
   },
-  logo: {
+  headImg: {
     type: STRING,
     comment: '头像',
   },

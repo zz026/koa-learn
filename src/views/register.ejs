@@ -7,9 +7,6 @@
 		margin: 50px auto;
 		padding: 30px;
 	}
-	form .form-group input[type="radio"] {
-		margin: 0 4px 0 10px;
-	}
 	#sameName {
 		display: none;
 		color: #d60808;
@@ -19,10 +16,10 @@
 </style>
 <form id="register-form">
 	<div class="form-group">
-		<label for="userName">账号</label>
-		<input id="userName" type="text" class="form-control" name="userName" placeholder="请输入账号" autocomplete="off">
+		<label for="userName">手机号</label>
+		<input id="userName" type="text" class="form-control" name="userName" placeholder="请输入手机号" autocomplete="off">
 	</div>
-	<div id="sameName">账号已存在</div>
+	<div id="sameName">手机号已存在</div>
 	<div class="form-group">
 		<label for="nickName">昵称</label>
 		<input type="text" class="form-control" name="nickName" placeholder="请输入昵称" autocomplete="off">
@@ -33,7 +30,7 @@
 	</div>
 	<div class="form-group">
 		<label for="confirmPassword">再次输入密码</label>
-		<input type="password" class="form-control" name="confirmPassword" placeholder="请输入密码" autocomplete="off">
+		<input type="password" class="form-control" name="confirmPassword" placeholder="请再次输入密码" autocomplete="off">
 	</div>
 	<div class="form-group">
 		<label for="gender">性别</label>
@@ -50,17 +47,16 @@
 
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
-<script src="/js/request.js"></script>
 
 <script>
 	$(function () {
-		// 增加表单验证
+		// 表单验证
 		$("#register-form").validate({
 			// debug: true, // 调试模式取消submit的默认提交功能   
 			rules: {
 				userName: {
 					required: true, // 必填项
-					rangelength: [2, 15]
+					checkUserName: true
 				},
 				nickName: {
 					required: true,
@@ -104,13 +100,34 @@
 					gender: Number(gender)
 				}, function(res) {
 					if (res.code === 0) {
-						toastr.success('注册成功！');
+						toastr.success('注册成功！请前往登录');
+						setTimeout(() => {
+							window.location.href = '/user/login'
+						}, 2000);
 					} else {
-						toastr.error(res.msg)
+						var errorObj = {
+							userName: '用户名格式错误',
+							nickName: '昵称格式错误',
+							password: '密码格式错误',
+							gender: '性别格式错误',
+						}
+						console.log('res.msg.indexOf', res.msg.indexOf('userName'))
+						if (res.msg.indexOf(errorObj.userName) > -1) {
+							toastr.error(errorObj.userName)
+						} else {
+							toastr.error(res.msg)
+						}
 					}
 				})
 			}, 
 		});
+
+
+	//自定义正则表达示验证方法 
+	$.validator.addMethod("checkUserName",function(value,element,params){ 
+		var checkUserName = /^1[0-9]{10}$/; 
+		return this.optional(element) || (checkUserName.test(value)); 
+	}, '手机号格式错误');
 
 		// 验证账号名唯一
 		$('#userName').on('blur', function () {
@@ -120,7 +137,6 @@
 					userName: $(this).val()
 				}, function(res) {
 					if (res.code !== 0) {
-						toastr.error(res.msg)
 						$('#sameName').fadeIn()
 					} else {
 						$('#sameName').fadeOut()

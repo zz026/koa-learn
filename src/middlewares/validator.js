@@ -11,6 +11,7 @@ function getValidate(userValidateFunc) {
   async function validate(ctx, next) {
     const data = ctx.request.body
     const error = userValidateFunc(data)
+    console.log('userValidateFunc error：', error)
     if (error) {
       // 验证失败
       return ctx.body = new ErrorModal({

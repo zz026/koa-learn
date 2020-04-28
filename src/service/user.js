@@ -15,11 +15,15 @@ async function getUserInfo(userName, password) {
   const params = {
     userName
   }
+  const attributes = ['id', 'userName', 'nickName', 'gender', 'cityId', 'headImg']
   if (password) {
-    Object.assign(params, { password })
+    // Object.assign(params, {
+    //   password: doCrypto(password)
+    // })
+    attributes.push('password')
   }
   const result = await User.findOne({
-    attributes: ['id', 'userName', 'nickName', 'cityId', 'logo'],
+    attributes: attributes,
     where: params
   })
   if (result === null) {

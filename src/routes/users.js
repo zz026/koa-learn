@@ -1,7 +1,11 @@
 const router = require('koa-router')()
 const SendSms = require('../utils/sms')
 const newCode = require('../utils/code')
-const { checkName, registerUser } = require('../controller/user')
+const {
+  checkName,
+  registerUser,
+  loginUser }
+  = require('../controller/user')
 const getValidate = require('../middlewares/validator')
 const userValidate = require('../validator/user')
 // 前缀
@@ -26,13 +30,7 @@ router.post('/register', getValidate(userValidate), async (ctx, next) => {
 // 登录
 router.post('/login', async (ctx, next) => {
   const { userName, password } = ctx.request.body
-  ctx.body = {
-    code: 0,
-    data: {
-      userName,
-      password
-    }
-  }
+  ctx.body = await loginUser(userName, password)
 })
 
 // 发送短信

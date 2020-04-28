@@ -10,9 +10,7 @@ const Schema = {
   properties: {
     userName: {
       type: 'string',
-      pattern: '^[a-zA-Z][a-zA-Z0-9]+$',
-      minLength: 4,
-      maxLength: 20,
+      pattern: '^1[0-9]{10}$',
     },
     nickName: {
       type: 'string',

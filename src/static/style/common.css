@@ -4,3 +4,11 @@ form label.error {
   font-size: 12px;
   margin-top: 6px;
 }
+
+/* 表单 */
+form label {
+  margin-bottom: 6px;
+}
+form .form-group input[type="radio"] {
+  margin: 0 4px 0 10px;
+}
