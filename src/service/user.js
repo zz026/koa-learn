@@ -37,12 +37,13 @@ async function getUserInfo(userName, password) {
  * @description 注册 创建用户
  * @param {object} userInfo 用户对象
  */
-async function createUser({ userName, password, nickName, gender }) {
+async function createUser({ userName, password, nickName, gender, headImg }) {
   const result = await User.create({
     userName,
     password: doCrypto(password),
     nickName,
     gender,
+    headImg
   })
   return result.dataValues
 }

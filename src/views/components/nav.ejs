@@ -17,6 +17,13 @@
   #nav .right {
     float: right;
   }
+  #headImg {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;;
+    vertical-align: middle;
+  }
 </style>
 
 <nav id="nav">
@@ -26,9 +33,8 @@
     <div class="right">
       <!-- 已登录 -->
       <div> <% if (locals.userInfo && locals.userInfo.userName) { %></div>
-        <div>
-         &lt; <%= locals.userInfo.nickName %>  &gt; 您好!
-        </div>
+        <img src="<%= locals.userInfo.headImg %>" id="headImg" />
+        <span> <%= locals.userInfo.nickName %></span>
       <div> <% } else { %></div>
         <a href="/user/login">点击登录</a>
       <div> <% } %></div>

@@ -17,6 +17,8 @@ const users = require('./routes/users')
 // 页面路由
 const userPage = require('./routes/views/userPage')
 const errorPage = require('./routes/views/errorPage')
+// jsonp
+const jsonpRouter = require('./routes/jsonp')
 
 
 // error handler
@@ -41,7 +43,6 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
-
 //session 配置
 app.keys = [Session_SCERET_KEY]
 app.use(session({
@@ -61,8 +62,12 @@ app.use(session({
 
 
 // routes
+// api
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+// jsonp
+app.use(jsonpRouter.routes(), jsonpRouter.allowedMethods())
+// pages
 app.use(userPage.routes(), userPage.allowedMethods())
 app.use(errorPage.routes(), errorPage.allowedMethods())
 

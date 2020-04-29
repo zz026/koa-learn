@@ -3,7 +3,7 @@
  * @author 双越老师
  */
 
-(function (window, $) {
+!(function (window, $) {
   // 方法将暴露到 window.ajax 下
   if (window.ajax != null) {
     console.error('window.ajax 被占用')

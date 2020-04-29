@@ -32,9 +32,13 @@ form label.error {
 }
 
 /* 表单 */
+form .form-group {
+  margin-bottom: 10px;
+}
 form label {
   margin-bottom: 6px;
 }
 form .form-group input[type="radio"] {
-  margin: 0 4px 0 10px;
+  margin-right: 10px;
+  margin-left: 10px;
 }

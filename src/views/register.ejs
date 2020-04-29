@@ -13,6 +13,15 @@
 		font-size: 12px;
 		margin-bottom: 10px;
 	}
+	#headList-view img {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+	}
+	#headList-view label {
+		margin-right: 20px;
+		margin-bottom: 20px;
+	}
 </style>
 
 <%- include('./components/nav') %>
@@ -38,9 +47,26 @@
 		</div>
 		<div class="form-group">
 			<label for="gender">性别</label>
-			<input type="radio" name="gender" value="1">男
-			<input type="radio" name="gender" value="2">女
-			<input type="radio" name="gender" value="3">保密
+			<p></p>
+			<div>
+				<label for="gender">
+					<input type="radio" name="gender" value="1" checked>男
+				</label>
+				<label for="gender">
+					<input type="radio" name="gender" value="2">女
+				</label>
+				<label for="gender">
+					<input type="radio" name="gender" value="3">保密
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="headImg">头像</label>
+			<div id="headList-view">
+				<input type="radio" name="headImg" value="1">
+				<input type="radio" name="headImg" value="2">女
+				<input type="radio" name="headImg" value="3">保密
+			</div>
 		</div>
 		<div style="text-align:center;margin-top:50px;">
 			<button type="submit" class="btn btn-primary" id="btn-submit" style="width:100%;">注 册</button>
@@ -77,6 +103,9 @@
 				gender: {
 					required: true,
 				},
+				headImg: {
+					required: true,
+				},
 			},
 			// 验证失败的提示信息
 			messages: {
@@ -87,21 +116,24 @@
 			errorPlacement: function (error, element) { // 指定错误信息位置
 				if (element.is(':radio') || element.is(':checkbox')) { // 如果是radio或checkbox
 					var eid = element.attr('name'); // 获取元素的name属性
-					error.appendTo(element.parent()); // 将错误信息添加当前元素的父结点后面
+					error.appendTo(element.parent().parent()); // 将错误信息添加当前元素的父结点后面
 				} else {
 					error.insertAfter(element);
 				}
 			},
 			submitHandler: function(form){ 
+				console.log($('input[name=headImg]:checked').val())
 				var userName = $('input[name=userName]').val()
 				var nickName = $('input[name=nickName]').val()
 				var password = $('input[name=password]').val()
 				var gender = $('input[name=gender]:checked').val()
+				var headImg = $('input[name=headImg]:checked').val()
 				ajax.post('/api/user/register', {
 					userName,
 					nickName,
 					password,
-					gender: Number(gender)
+					gender: Number(gender),
+					headImg,
 				}, function(res) {
 					if (res.code === 0) {
 						toastr.success('注册成功！请前往登录');
@@ -109,29 +141,18 @@
 							window.location.href = '/user/login'
 						}, 2000);
 					} else {
-						var errorObj = {
-							userName: '用户名格式错误',
-							nickName: '昵称格式错误',
-							password: '密码格式错误',
-							gender: '性别格式错误',
-						}
-						console.log('res.msg.indexOf', res.msg.indexOf('userName'))
-						if (res.msg.indexOf(errorObj.userName) > -1) {
-							toastr.error(errorObj.userName)
-						} else {
-							toastr.error(res.msg)
-						}
+						toastr.error(res.msg)
 					}
 				})
 			}, 
 		});
 
 
-	//自定义正则表达示验证方法 
-	$.validator.addMethod("checkUserName",function(value,element,params){ 
-		var checkUserName = /^1[0-9]{10}$/; 
-		return this.optional(element) || (checkUserName.test(value)); 
-	}, '手机号格式错误');
+		// 自定义正则表达示验证方法 
+		$.validator.addMethod("checkUserName",function(value,element,params){ 
+			var checkUserName = /^1[0-9]{10}$/; 
+			return this.optional(element) || (checkUserName.test(value)); 
+		}, '手机号格式错误');
 
 		// 验证账号名唯一
 		$('#userName').on('blur', function () {
@@ -148,5 +169,28 @@
 				})
 			}
 		})
+
+
+		// 获取头像
+		function getHeadImg() {
+			$.ajax({
+				url:'/jsonp/headList',
+				dataType: 'JSONP',
+				success: function (res) {
+					if (res.code === 0) {
+						var text = ''
+						$.map(res.data, function(val) {
+							text += '<label>' +
+									'<input type="radio" name="headImg" value=' + val.url + '>' +
+									'<img src=' + val.url + ' />'
+								+ '</label>'
+						})
+						$('#headList-view').html(text)
+					}
+				}
+			})
+		}
+
+		getHeadImg()
 	})
 </script>

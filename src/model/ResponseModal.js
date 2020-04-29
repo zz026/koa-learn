@@ -36,7 +36,7 @@ class ErrorModal extends BaseModal {
   constructor({ code, msg }) {
     super({
       code,
-      msg: typeof msg === 'string' ? msg.replace(/must be unique/ , '必须唯一!') : msg
+      msg
     })
   }
 }
