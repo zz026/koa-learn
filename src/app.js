@@ -5,6 +5,8 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+// 环境变量
+const { ENV } = require('./utils/env')
 // 密钥
 const { Session_SCERET_KEY } = require('./conf/sceretKey')
 // session
@@ -35,13 +37,15 @@ app.use(views(__dirname + '/views', {
   extension: 'ejs'
 }))
 
-// logger
-app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
-})
+// logger dev环境下
+if (ENV === 'dev') {
+  app.use(async (ctx, next) => {
+    const start = new Date()
+    await next()
+    const ms = new Date() - start
+    console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+  })
+}
 
 //session 配置
 app.keys = [Session_SCERET_KEY]
@@ -74,6 +78,10 @@ app.use(errorPage.routes(), errorPage.allowedMethods())
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
+  ctx.body = {
+    code: 1,
+    msg: JSON.stringify(err)
+  }
 });
 
 module.exports = app

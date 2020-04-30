@@ -11,6 +11,7 @@ const oneUser = {
   gender: 2,
   headImg: 'http://106.13.204.211/headList/6.jpg'
 }
+let cookie = ''
 
 console.log('oneUser：', oneUser)
 
@@ -47,6 +48,7 @@ test('登录成功', async () => {
     })
 
   console.log('······login.body：··········', res.body)
+  cookie = res.header['set-cookie'].join(';')
   expect(res.body.code).toBe(0)
 })
 
@@ -79,6 +81,7 @@ test('登录失败 密码不一致', async () => {
 test('删除用户', async () => {
   const res = await server
     .post('/api/user/del')
+    .set('cookie', cookie)
     .send({
       userName: oneUser.userName,
       password: oneUser.password

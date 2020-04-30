@@ -1,5 +1,4 @@
 const router = require('koa-router')()
-const { checkLogin } = require('../middlewares/checkLogin')
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {

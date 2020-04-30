@@ -8,6 +8,7 @@ const {
   deleteUser,
 }
   = require('../controller/user')
+const { checkLogin } = require('../middlewares/checkLogin')
 const getValidate = require('../middlewares/validator')
 const userValidate = require('../validator/user')
 // 前缀
@@ -36,7 +37,7 @@ router.post('/login', async (ctx, next) => {
 })
 
 // 删除
-router.post('/del', async (ctx, next) => {
+router.post('/del', checkLogin, async (ctx, next) => {
   const { userName, password } = ctx.request.body
   ctx.body = await deleteUser(userName, password)
 })

@@ -56,7 +56,7 @@ async function registerUser(userInfo) {
  * @param {Object} ctx koa2 ctx
  * @param {string} userName 用户名
  * @param {string} password 密码
- */
+*/
 async function loginUser(ctx, userName, password) {
   const userInfo = await getUserInfo(userName, password)
   // 用户不存在
@@ -83,7 +83,6 @@ async function loginUser(ctx, userName, password) {
 
 async function deleteUser(userName, password) {
   const result = await destroyUser(userName, password)
-  console.log('result', result)
   if (result) {
     return new SuccessModal()
   } else {
