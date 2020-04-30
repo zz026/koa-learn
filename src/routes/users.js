@@ -6,6 +6,7 @@ const {
   registerUser,
   loginUser,
   deleteUser,
+  logoutUser,
 }
   = require('../controller/user')
 const { checkLogin } = require('../middlewares/checkLogin')
@@ -37,26 +38,30 @@ router.post('/login', async (ctx, next) => {
 })
 
 // 删除
-router.post('/del', checkLogin, async (ctx, next) => {
+router.post('/delete', checkLogin, async (ctx, next) => {
   const { userName, password } = ctx.request.body
   ctx.body = await deleteUser(userName, password)
 })
 
+// 退出登录
+router.post('/logout', checkLogin, async (ctx, next) => {
+  ctx.body = await logoutUser(ctx)
+})
+
 // 发送短信
 router.post('/sms', async (ctx, next) => {
-  console.log('ctx.request.body', ctx.request.body)
-  const params = ctx.request.body
+  const { phone } = ctx.request.body
   const code = newCode()
   console.log('code', code)
   try {
     const smsResult = await SendSms(
-      params.phone,
+      phone,
       code
     )
     console.log('smsResult', smsResult)
     ctx.body = {
       code: 0,
-      phone: params.phone,
+      phone,
       msg: smsResult.Message
     }
   } catch(err) {

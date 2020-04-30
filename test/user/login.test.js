@@ -74,13 +74,37 @@ test('登录失败 密码不一致', async () => {
   expect(res.body.code).toBe(10004)
 })
 
+/**
+ * 退出
+*/
+
+test('退出登录', async () => {
+  const res = await server
+    .post('/api/user/logout')
+    .set('cookie', cookie)
+
+  expect(res.body.code).toBe(0)
+})
+
 
 /**
  * 删除
- */
+ * 需再次登录，因为前面退出登录了
+*/
+test('登录成功', async () => {
+  const res = await server
+    .post('/api/user/login')
+    .send({
+      userName: oneUser.userName,
+      password: oneUser.password
+    })
+
+  cookie = res.header['set-cookie'].join(';')
+  expect(res.body.code).toBe(0)
+})
 test('删除用户', async () => {
   const res = await server
-    .post('/api/user/del')
+    .post('/api/user/delete')
     .set('cookie', cookie)
     .send({
       userName: oneUser.userName,
