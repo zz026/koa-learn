@@ -48,8 +48,19 @@ async function createUser({ userName, password, nickName, gender, headImg }) {
   return result.dataValues
 }
 
+async function destroyUser(userName, password) {
+  const result = await User.destroy({
+    where: {
+      userName,
+      password: doCrypto(password),
+    }
+  })
+  return result > 0
+}
+
 
 module.exports = {
   getUserInfo,
-  createUser
+  createUser,
+  destroyUser
 }

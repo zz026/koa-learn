@@ -34,7 +34,7 @@ router.get('/json2', async (ctx, next) => {
   }
 })
 
-router.post('/login', checkLogin, async (ctx, next) => {
+router.post('/login', async (ctx, next) => {
   ctx.body = {
     title: '登录成功',
   }

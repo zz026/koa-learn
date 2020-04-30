@@ -12,7 +12,9 @@ const { CRYPTO_SCERET_KEY } = require('../conf/sceretKey')
 */
 function _MD5(text) {
   const md5 = crypto.createHash('md5')
-  return md5.update(text).digest('hex')
+  const psd = md5.update(text).digest('hex')
+  console.log('psd', psd)
+  return psd
 }
 
 /**

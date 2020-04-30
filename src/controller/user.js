@@ -1,7 +1,7 @@
 /**
  * @description user controller
  */
-const { getUserInfo, createUser } = require('../service/user')
+const { getUserInfo, createUser, destroyUser } = require('../service/user')
 const { SuccessModal, ErrorModal } = require('../model/ResponseModal')
 const {
   jsonErrorCode,
@@ -74,8 +74,26 @@ async function loginUser(ctx, userName, password) {
   }
 }
 
+/**
+ * @description 删除用户
+ * @author zzw
+ * @param {string} userName 用户名
+ * @param {string} password 密码
+ */
+
+async function deleteUser(userName, password) {
+  const result = await destroyUser(userName, password)
+  console.log('result', result)
+  if (result) {
+    return new SuccessModal()
+  } else {
+    return new ErrorModal(userPsdErrorCode)
+  }
+}
+
 module.exports = {
   checkName,
   registerUser,
-  loginUser
+  loginUser,
+  deleteUser
 }
