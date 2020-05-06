@@ -191,6 +191,20 @@
 			})
 		}
 
+		// 获取地区
+		function getArea() {
+			$.ajax({
+				url:'/jsonp/area',
+				dataType: 'JSONP',
+				success: function (res) {
+					if (res.code === 0) {
+						console.log('area', res)
+					}
+				}
+			})
+		}
+
 		getHeadImg()
+		getArea()
 	})
 </script>

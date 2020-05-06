@@ -83,7 +83,6 @@ async function loginUser(ctx, userName, password) {
 
 async function deleteUser(userName, password) {
   const result = await destroyUser(userName, password)
-  console.log('result', result)
   if (result) {
     return new SuccessModal()
   } else {
