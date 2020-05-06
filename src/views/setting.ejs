@@ -1,0 +1,64 @@
+<%- include('./components/header', { title: '个人设置' }) %>
+
+<%- include('./components/nav', { userInfo: locals.userInfo }) %>
+
+
+
+<div class="container">
+  <form id="setting-form">
+    <input type="file" accept="image/*" id="upload-input">
+  </form>
+</div>
+
+<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+
+<%- include('./components/footer.ejs') %>
+
+<script>
+  $(function() {
+    // 增加表单验证
+    // $("#login-form").validate({
+    //   // debug: true, // 调试模式取消submit的默认提交功能   
+    //   rules: {
+    //     userName: {
+    //       required: true, // 必填项
+    //       rangelength: [2, 15]
+    //     },
+    //     password: {
+    //       required: true,
+    //       rangelength: [6, 16]
+    //     }
+    //   },
+    //   submitHandler: function(form){ 
+    //     var userName = $('input[name=userName]').val()
+    //     var password = $('input[name=password]').val()
+    //     ajax.post('/api/user/login', {
+    //       userName,
+    //       password,
+    //     }, function(res) {
+    //       if (res.code === 0) {
+    //         toastr.success('登录成功！');
+    //         setTimeout(() => {
+    //           window.location.href = '/'
+    //         }, 2000);
+    //       } else {
+    //         toastr.error(res.msg)
+    //       }
+    //     })
+    //   }, 
+    // });
+    var $filePicture = $('#upload-input')
+
+    $filePicture.change(function() {
+      var file = $filePicture[0].files[0]
+      ajax.upload('/api/utils/upload', file, function(res) {
+        console.log('res', res)
+        if (res.code === 0) {
+        } else {
+          toastr.error(res.msg)
+        }
+      })
+    })
+  })
+</script>

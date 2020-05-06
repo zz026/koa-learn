@@ -18,3 +18,7 @@ koa,mysql,redis
 
   加密数据
   crypto
+
+  文件上传
+  formidable-upload-koa
+  fs-extra 文件管理

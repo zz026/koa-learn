@@ -16,6 +16,7 @@ const { REDIS_CONF } = require('./conf/db')
 // api路由
 const index = require('./routes/index')
 const users = require('./routes/users')
+const utils = require('./routes/utils')
 // 页面路由
 const userPage = require('./routes/views/userPage')
 const errorPage = require('./routes/views/errorPage')
@@ -69,6 +70,7 @@ app.use(session({
 // api
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(utils.routes(), utils.allowedMethods())
 // jsonp
 app.use(jsonpRouter.routes(), jsonpRouter.allowedMethods())
 // pages

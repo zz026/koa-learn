@@ -24,6 +24,12 @@
     margin-right: 10px;;
     vertical-align: middle;
   }
+  #logout {
+    margin-left: 10px;
+  }
+  #nav .nickName {
+    color: #2f89fc;
+  }
 </style>
 
 <nav id="nav">
@@ -34,7 +40,7 @@
       <!-- 已登录 -->
       <div> <% if (locals.userInfo && locals.userInfo.userName) { %></div>
         <img src="<%= locals.userInfo.headImg %>" id="headImg" />
-        <span> <%= locals.userInfo.nickName %></span>
+        <a href="/user/setting" class="nickName"><%= locals.userInfo.nickName %></a>
         <a href="javascript:void(0)" id="logout">退出登录</a>
       <div> <% } else { %></div>
         <a href="/user/login">点击登录</a>
