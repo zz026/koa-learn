@@ -35,9 +35,27 @@
       <div> <% if (locals.userInfo && locals.userInfo.userName) { %></div>
         <img src="<%= locals.userInfo.headImg %>" id="headImg" />
         <span> <%= locals.userInfo.nickName %></span>
+        <a href="javascript:void(0)" id="logout">退出登录</a>
       <div> <% } else { %></div>
         <a href="/user/login">点击登录</a>
       <div> <% } %></div>
     </div>
   </div>
 </nav>
+
+<script>
+  $(function() {
+    $('#logout').on('click', function() {
+      ajax.post('/api/user/logout', function(res) {
+          if (res.code === 0) {
+            toastr.success('退出成功！');
+            setTimeout(() => {
+              window.location.href = '/user/login'
+            }, 2000);
+          } else {
+            toastr.error(res.msg)
+          }
+        })
+    })
+  })
+</script>

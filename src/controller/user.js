@@ -56,7 +56,7 @@ async function registerUser(userInfo) {
  * @param {Object} ctx koa2 ctx
  * @param {string} userName 用户名
  * @param {string} password 密码
- */
+*/
 async function loginUser(ctx, userName, password) {
   const userInfo = await getUserInfo(userName, password)
   // 用户不存在
@@ -80,7 +80,6 @@ async function loginUser(ctx, userName, password) {
  * @param {string} userName 用户名
  * @param {string} password 密码
  */
-
 async function deleteUser(userName, password) {
   const result = await destroyUser(userName, password)
   if (result) {
@@ -90,9 +89,20 @@ async function deleteUser(userName, password) {
   }
 }
 
+/**
+ * @description 退出登录
+ * @author zzw
+ * @param {object} ctx ctx 
+ */
+async function logoutUser(ctx) {
+  delete ctx.session.userInfo
+  return new SuccessModal()
+}
+
 module.exports = {
   checkName,
   registerUser,
   loginUser,
-  deleteUser
+  deleteUser,
+  logoutUser
 }
