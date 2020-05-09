@@ -2,63 +2,194 @@
 
 <%- include('./components/nav', { userInfo: locals.userInfo }) %>
 
-
+<style>
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 30px;
+}
+#setting-form-headImg {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  box-shadow: 0 5px 15px -5px rgba(0,0,0,.5);
+  padding: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+</style>
 
 <div class="container">
   <form id="setting-form">
-    <input type="file" accept="image/*" id="upload-input">
+    <div class="form-group" style="text-align:center;margin-bottom:20px;">
+      <img src="<%- locals.userInfo.headImg %>" alt="头像" id="setting-form-headImg" >
+      <input type="file" accept="image/*" id="upload-input" style="display: none;">
+      <div ><%- locals.userInfo.userName %></div>
+    </div>
+
+    <div class="form-group">
+      <label for="nickName">昵称</label>
+      <input type="text" class="form-control" name="nickName" placeholder="请输入昵称" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+			<label for="gender">性别</label>
+			<p></p>
+			<div>
+				<label for="gender">
+					<input type="radio" name="gender" value="1">男
+				</label>
+				<label for="gender">
+					<input type="radio" name="gender" value="2">女
+				</label>
+				<label for="gender">
+					<input type="radio" name="gender" value="3">保密
+				</label>
+			</div>
+    </div>
+    
+    <div class="form-group">
+			<label for="provinceId">省份</label>
+			<select id="pro-select" class="form-control" name="provinceId">
+				<option label="请选择省份" value=""></option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="cityId">城市</label>
+			<select id="city-select" class="form-control" placeholder="请选择城市" name="cityId">
+				<option label="请选择城市" value=""></option>
+			</select>
+		</div>
+
+    <div class="submit-btn">
+			<button type="submit" class="btn btn-primary">修 改</button>
+		</div>
   </form>
 </div>
 
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+<script src="/js/lib/jquery.populateForm.js"></script>
 
 <%- include('./components/footer.ejs') %>
 
 <script>
   $(function() {
-    // 增加表单验证
-    // $("#login-form").validate({
-    //   // debug: true, // 调试模式取消submit的默认提交功能   
-    //   rules: {
-    //     userName: {
-    //       required: true, // 必填项
-    //       rangelength: [2, 15]
-    //     },
-    //     password: {
-    //       required: true,
-    //       rangelength: [6, 16]
-    //     }
-    //   },
-    //   submitHandler: function(form){ 
-    //     var userName = $('input[name=userName]').val()
-    //     var password = $('input[name=password]').val()
-    //     ajax.post('/api/user/login', {
-    //       userName,
-    //       password,
-    //     }, function(res) {
-    //       if (res.code === 0) {
-    //         toastr.success('登录成功！');
-    //         setTimeout(() => {
-    //           window.location.href = '/'
-    //         }, 2000);
-    //       } else {
-    //         toastr.error(res.msg)
-    //       }
-    //     })
-    //   }, 
-    // });
-    var $filePicture = $('#upload-input')
+    var provinceList = []
+    var cityList = []
 
-    $filePicture.change(function() {
-      var file = $filePicture[0].files[0]
+    // 增加表单验证
+    $("#setting-form").validate({
+      debug: true, // 调试模式取消submit的默认提交功能   
+      rules: {
+        nickName: {
+          required: true, // 必填项
+          rangelength: [2, 15]
+        },
+        gender: {
+          required: true, // 必填项
+        },
+        provinceId: {
+          required: true, // 必填项
+        },
+        cityId: {
+          required: true, // 必填项
+        },
+      },
+      submitHandler: function(form){
+        var headImg = $('#setting-form-headImg').attr('src')
+        var nickName = $('input[name=nickName]').val()
+        var gender = $('input[name=gender]:checked').val()
+        var provinceId = $('#pro-select').val()
+        var cityId = $('#city-select').val()
+        ajax.post('/api/user/update', {
+          headImg,
+          nickName,
+          gender: Number(gender),
+          provinceId,
+          cityId
+        }, function(res) {
+          if (res.code === 0) {
+            toastr.success('修改成功');
+            setTimeout(function() {
+              window.location.reload()
+            }, 500);
+          } else {
+            toastr.error(res.msg)
+          }
+        })
+      }, 
+    });
+
+    $('#setting-form-headImg').click(function() {
+      $('#upload-input').click()
+    })
+    
+    // 上传头像
+    $('#upload-input').change(function() {
+      var file = $(this)[0].files[0]
       ajax.upload('/api/utils/upload', file, function(res) {
         console.log('res', res)
         if (res.code === 0) {
+          $('#setting-form-headImg').attr('src', res.data)
         } else {
           toastr.error(res.msg)
         }
       })
     })
+
+    // 获取用户详情
+    function getInfo() {
+      ajax.post('/api/user/getUserInfo', function(res) {
+        if (res.code === 0) {
+          $('#setting-form').populateForm(res.data);
+          // 手动调用省份获取相应市
+          $("#pro-select").trigger("change");
+          $("#city-select").val(res.data.cityId);
+        } else {
+          toastr.error(res.msg)
+        }
+      })
+    }
+
+    // 获取地区
+		function getArea() {
+			$.ajax({
+				url:'/jsonp/area',
+				dataType: 'JSONP',
+				success: function (res) {
+					if (res.code === 0) {
+						var text = '<option label="请选择省份" value=""></option>'
+						res.data.forEach(function(val) {
+							if (val.pid === 0) {
+								provinceList.push(val)
+							} else {
+								cityList.push(val)
+							}
+						})
+						$.map(provinceList, function(val) {
+							text += '<option label="' + val.name + '" value="' + val.id + '"></option>'
+						})
+            $('#pro-select').html(text)
+		        getInfo()
+					}
+				}
+			})
+		}
+
+
+		// 省份change
+		$('#pro-select').change(function() {
+			var selectVal = $(this).val()
+			var text = '<option label="请选择城市" value=""></option>'
+			$.map(cityList, function(val) {
+				if (val.pid == selectVal) {
+					text += '<option label="' + val.name + '" value="' + val.id + '"></option>'
+				}
+			})
+			$('#city-select').html(text)
+		})
+
+		getArea()
   })
 </script>

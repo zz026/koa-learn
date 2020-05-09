@@ -26,6 +26,21 @@ const Schema = {
       type: 'number',
       minmum: 1,
       maxmum: 3,
+    },
+    headImg: {
+      type: 'string',
+      minLength: 2,
+      maxLength: 100,
+    },
+    provinceId: {
+      type: 'string',
+      minLength: 2,
+      maxLength: 10,
+    },
+    cityId: {
+      type: 'string',
+      minLength: 2,
+      maxLength: 10,
     }
   }
 }

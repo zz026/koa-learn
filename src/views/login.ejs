@@ -27,8 +27,8 @@
 				<label for="password">密码</label>
 				<input type="password" class="form-control" name="password" placeholder="请输入密码" autocomplete="off">
 			</div>
-			<div style="text-align: center;">
-				<button type="submit" class="btn btn-primary" id="btn-submit">登 录</button>
+			<div class="submit-btn">
+				<button type="submit" class="btn btn-primary">登 录</button>
 			</div>
 			<div class="go-register">
 				还无账号？前往<a href="/user/register">注册</a>!
@@ -43,6 +43,14 @@
 
 	<script>
 		$(function() {
+			// 获取路径
+			function getQueryString (name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null) return unescape(r[2]);
+				return null;
+			}
+			
 			// 增加表单验证
 			$("#login-form").validate({
 				// debug: true, // 调试模式取消submit的默认提交功能   
@@ -65,9 +73,10 @@
 					}, function(res) {
 						if (res.code === 0) {
 							toastr.success('登录成功！');
-							setTimeout(() => {
-								window.location.href = '/'
-							}, 2000);
+							setTimeout(function() {
+								var redirectUrl = getQueryString('url') || '/'
+								location.href = redirectUrl
+							}, 500);
 						} else {
 							toastr.error(res.msg)
 						}

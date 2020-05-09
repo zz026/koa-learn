@@ -1,6 +1,10 @@
+/**
+ * @description user jsonp router
+ * @author zzw
+ */
 const router = require('koa-router')()
-const headList = require('../static/js/headList')
-const seq = require('../db/seq')
+const headList = require('../../static/js/headList')
+const seq = require('../../db/seq')
 router.prefix('/jsonp')
 
 // jsonp返回头像地址

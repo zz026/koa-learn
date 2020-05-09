@@ -3,9 +3,14 @@ body {
 }
 /* 版心 */
 .w {
-  width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  background-color: #ebeef5;
+  /* background-color: #ebeef5; */
+}
+@media screen and (min-width: 1200px) {
+  .w {
+    width: 1200px;
+  }
 }
 
 .container {
@@ -41,4 +46,13 @@ form label {
 form .form-group input[type="radio"] {
   margin-right: 10px;
   margin-left: 10px;
+}
+
+/* 提交按钮 */
+form .submit-btn {
+  text-align:center;
+  margin-top:50px;
+}
+form .submit-btn>.btn {
+  width: 100%;
 }

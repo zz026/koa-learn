@@ -1,4 +1,9 @@
+/**
+ * @description 用户页面 router
+ * @author zzw
+ */
 const router = require('koa-router')()
+const { checkLoginApiPage } = require('../../middlewares/checkLogin')
 
 router.prefix('/user')
 
@@ -17,7 +22,7 @@ router.get('/register', async (ctx, next) => {
 })
 
 // 个人设置页
-router.get('/setting', async (ctx, next) => {
+router.get('/setting', checkLoginApiPage, async (ctx, next) => {
   await ctx.render('setting', {
     userInfo: ctx.session.userInfo || {}
   })

@@ -2,7 +2,7 @@
  * @description 基础模型
  * @author zzw
 */
-const { formatTime } = require('../service/_format')
+const { formatData } = require('../service/_format')
 
 class BaseModal {
   constructor({ code, data, msg }) {
@@ -22,7 +22,7 @@ class SuccessModal extends BaseModal {
   constructor(data = {}) {
     super({
       code: 0,
-      data: formatTime(data),
+      data: formatData(data),
       msg: '操作成功'
     })
   }
@@ -33,7 +33,7 @@ class SuccessModal extends BaseModal {
  * @author zzw
 */
 class ErrorModal extends BaseModal {
-  constructor({ code, msg }) {
+  constructor({ code = -1, msg }) {
     super({
       code,
       msg

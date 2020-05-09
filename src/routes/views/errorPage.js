@@ -1,3 +1,7 @@
+/**
+ * @description 错误页面 router
+ * @author zzw
+ */
 const router = require('koa-router')()
 
 router.get('/error', async (ctx, next) => {

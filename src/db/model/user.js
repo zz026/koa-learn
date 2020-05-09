@@ -4,9 +4,9 @@
  */
 
 const seq = require('../seq')
-const { STRING, DECIMAL } = require('sequelize');
+const { STRING, DECIMAL, DATE } = require('sequelize');
 
-const User = seq.define('user', {
+const User = seq.define('t_user', {
   userName: {
     type: STRING(20),
     allowNull: false, // 不能为空
@@ -33,10 +33,25 @@ const User = seq.define('user', {
     type: STRING,
     comment: '头像',
   },
+  provinceId: {
+    type: STRING(20),
+    comment: '省份id',
+  },
   cityId: {
     type: STRING(20),
     comment: '城市id',
   },
-})
+  // createDate: {
+  //   type: DATE,
+  // },
+  // updateDate: {
+  //   type: DATE,
+  // },
+},
+{
+  freezeTableName: true, // 默认false修改表名为复数，true不修改表名，与数据库表名同步
+  // timestamps: false // 是否自动添加时间戳createAt，updateAt
+}
+)
 
 module.exports = User

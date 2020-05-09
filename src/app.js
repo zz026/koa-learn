@@ -5,6 +5,8 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const koaStatic = require('koa-static')
+const path = require('path')
 // 环境变量
 const { ENV } = require('./utils/env')
 // 密钥
@@ -15,13 +17,14 @@ const redisStore = require('koa-redis')
 const { REDIS_CONF } = require('./conf/db')
 // api路由
 const index = require('./routes/index')
-const users = require('./routes/users')
-const utils = require('./routes/utils')
+const users = require('./routes/api/users')
+const utils = require('./routes/api/utils')
+// jsonp
+const jsonpRouter = require('./routes/api/jsonp')
+
 // 页面路由
 const userPage = require('./routes/views/userPage')
 const errorPage = require('./routes/views/errorPage')
-// jsonp
-const jsonpRouter = require('./routes/jsonp')
 
 
 // error handler
@@ -32,7 +35,8 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(logger())
-app.use(require('koa-static')(__dirname + '/static'))
+app.use(koaStatic(__dirname + '/static'))
+app.use(koaStatic(path.join(__dirname, '..', '/resource')))
 
 app.use(views(__dirname + '/views', {
   extension: 'ejs'
@@ -79,7 +83,7 @@ app.use(errorPage.routes(), errorPage.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx)
+  console.error('server error', err)
   ctx.body = {
     code: 1,
     msg: JSON.stringify(err)

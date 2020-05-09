@@ -61,13 +61,26 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="provinceId">省份</label>
+			<select id="pro-select" class="form-control" name="provinceId">
+				<option label="请选择省份" value=""></option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="cityId">城市</label>
+			<select id="city-select" class="form-control" placeholder="请选择城市" name="cityId">
+				<option label="请选择城市" value=""></option>
+			</select>
+		</div>
+		<div class="form-group">
 			<label for="headImg">头像</label>
 			<div id="headList-view"></div>
 		</div>
-		<div style="text-align:center;margin-top:50px;">
-			<button type="submit" class="btn btn-primary" id="btn-submit" style="width:100%;">注 册</button>
+		<div class="submit-btn">
+			<button type="submit" class="btn btn-primary">注 册</button>
 		</div>
 	</form>
+
 </div>
 <%- include('./components/footer.ejs') %>
 
@@ -76,9 +89,12 @@
 
 <script>
 	$(function () {
+		var provinceList = []
+		var cityList = []
+
 		// 表单验证
 		$("#register-form").validate({
-			// debug: true, // 调试模式取消submit的默认提交功能   
+			debug: true, // 调试模式取消submit的默认提交功能   
 			rules: {
 				userName: {
 					required: true, // 必填项
@@ -97,6 +113,12 @@
 					equalTo: 'input[name="password"]'
 				},
 				gender: {
+					required: true,
+				},
+				provinceId: {
+					required: true,
+				},
+				cityId: {
 					required: true,
 				},
 				headImg: {
@@ -118,28 +140,7 @@
 				}
 			},
 			submitHandler: function(form){ 
-				console.log($('input[name=headImg]:checked').val())
-				var userName = $('input[name=userName]').val()
-				var nickName = $('input[name=nickName]').val()
-				var password = $('input[name=password]').val()
-				var gender = $('input[name=gender]:checked').val()
-				var headImg = $('input[name=headImg]:checked').val()
-				ajax.post('/api/user/register', {
-					userName,
-					nickName,
-					password,
-					gender: Number(gender),
-					headImg,
-				}, function(res) {
-					if (res.code === 0) {
-						toastr.success('注册成功！请前往登录');
-						setTimeout(() => {
-							window.location.href = '/user/login'
-						}, 2000);
-					} else {
-						toastr.error(res.msg)
-					}
-				})
+				submitForm()
 			}, 
 		});
 
@@ -166,6 +167,34 @@
 			}
 		})
 
+		// 表单提交
+		function submitForm() {
+			var userName = $('input[name=userName]').val()
+			var nickName = $('input[name=nickName]').val()
+			var password = $('input[name=password]').val()
+			var gender = $('input[name=gender]:checked').val()
+			var provinceId = $('#pro-select').val()
+			var cityId = $('#city-select').val()
+			var headImg = $('input[name=headImg]:checked').val()
+			ajax.post('/api/user/register', {
+				userName,
+				nickName,
+				password,
+				gender: Number(gender),
+				provinceId,
+				cityId,
+				headImg,
+			}, function(res) {
+				if (res.code === 0) {
+					toastr.success('注册成功！请前往登录');
+					setTimeout(function() {
+						window.location.href = '/user/login'
+					}, 500);
+				} else {
+					toastr.error(res.msg)
+				}
+			})
+		}
 
 		// 获取头像
 		function getHeadImg() {
@@ -194,11 +223,36 @@
 				dataType: 'JSONP',
 				success: function (res) {
 					if (res.code === 0) {
-						console.log('area', res)
+						var text = '<option label="请选择省份" value=""></option>'
+						res.data.forEach(function(val) {
+							if (val.pid === 0) {
+								provinceList.push(val)
+							} else {
+								cityList.push(val)
+							}
+						})
+						$.map(provinceList, function(val) {
+							text += '<option label="' + val.name + '" value="' + val.id + '"></option>'
+						})
+						$('#pro-select').html(text)
+						// console.log($('#pro-select').val(''))
 					}
 				}
 			})
 		}
+
+
+		// 省份change
+		$('#pro-select').change(function() {
+			var selectVal = $(this).val()
+			var text = '<option label="请选择城市" value=""></option>'
+			$.map(cityList, function(val) {
+				if (val.pid == selectVal) {
+					text += '<option label="' + val.name + '" value="' + val.id + '"></option>'
+				}
+			})
+			$('#city-select').html(text)
+		})
 
 		getHeadImg()
 		getArea()

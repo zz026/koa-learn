@@ -11,12 +11,6 @@
     left: 0;
     right: 0;
   }
-  #nav h1 {
-    float: left;
-  }
-  #nav .right {
-    float: right;
-  }
   #headImg {
     width: 30px;
     height: 30px;
@@ -24,20 +18,25 @@
     margin-right: 10px;;
     vertical-align: middle;
   }
-  #logout {
-    margin-left: 10px;
+  .dropdown-menu {
+    box-shadow: 0 0 1px 0px rgba(0,0,0,0.3), 0 0 6px 2px rgba(0,0,0,0.15);
+    border: 0;
   }
-  #nav .nickName {
-    color: #2f89fc;
+  .dropdown-menu li>a {
+    line-height: 30px;
+  }
+  @media screen and (min-width: 1200px) {
+    #nav h1 {
+      margin-right: 100px;
+    }
   }
 </style>
 
-<nav id="nav">
+<!-- <nav id="nav">
   <div class="w clearfix">
     <h1>仿微博</h1>
     
     <div class="right">
-      <!-- 已登录 -->
       <div> <% if (locals.userInfo && locals.userInfo.userName) { %></div>
         <img src="<%= locals.userInfo.headImg %>" id="headImg" />
         <a href="/user/setting" class="nickName"><%= locals.userInfo.nickName %></a>
@@ -45,6 +44,50 @@
       <div> <% } else { %></div>
         <a href="/user/login">点击登录</a>
       <div> <% } %></div>
+    </div>
+  </div>
+</nav> -->
+
+<nav class="navbar navbar-default" id="nav">
+  <div class="container-fluid w">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <h1>仿微博</h1>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <ul class="nav navbar-nav">
+        <li><a href="/">首页</a></li>
+        <li><a href="#我的广场">我的广场</a></li>
+        <li><a href="#空间">空间</a></li>
+      </ul>
+    
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <div> <% if (locals.userInfo && locals.userInfo.userName) { %></div>
+          <!-- 已登录 -->
+          <div class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <img src="<%= locals.userInfo.headImg %>" id="headImg" />
+            <%= locals.userInfo.nickName %>
+            <span class="caret"></span>
+          </div>
+          <!-- 未登录 -->
+          <div> <% } else { %></div>
+            <a href="/user/login">点击登录</a>
+          <div> <% } %></div>
+
+          <ul class="dropdown-menu">
+            <li><a href="/user/setting">个人中心</a></li>
+            <li id="logout"><a href="#">退出登录</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
@@ -55,9 +98,9 @@
       ajax.post('/api/user/logout', function(res) {
           if (res.code === 0) {
             toastr.success('退出成功！');
-            setTimeout(() => {
+            setTimeout(function() {
               window.location.href = '/user/login'
-            }, 2000);
+            }, 500);
           } else {
             toastr.error(res.msg)
           }

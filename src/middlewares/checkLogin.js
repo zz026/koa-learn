@@ -6,7 +6,8 @@
 const { ErrorModal } = require('../model/ResponseModal')
 const { noLoginCode } = require('../model/ErrorCode')
 
-async function checkLogin(ctx, next) {
+// api
+async function checkLoginApi(ctx, next) {
   // 已登录
   if (ctx.session && ctx.session.userInfo) {
     await next()
@@ -15,6 +16,18 @@ async function checkLogin(ctx, next) {
   ctx.body = new ErrorModal(noLoginCode)
 }
 
+// 页面
+async function checkLoginApiPage(ctx, next) {
+  // 已登录
+  if (ctx.session && ctx.session.userInfo) {
+    await next()
+    return 
+  }
+  const curUrl = ctx.url
+  ctx.redirect('/user/login?url=' + encodeURIComponent(curUrl))
+}
+
 module.exports = {
-  checkLogin
+  checkLoginApi,
+  checkLoginApiPage
 }

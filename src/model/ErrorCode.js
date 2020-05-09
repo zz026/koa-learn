@@ -22,5 +22,9 @@ module.exports = {
   noLoginCode: {
     code: 10005,
     msg: '尚未登录'
+  },
+  bigSizeCode: {
+    code: 10006,
+    msg: '文件过大'
   }
 }
