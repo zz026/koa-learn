@@ -5,9 +5,23 @@
     }) %>
 
     <%- include('./components/nav', { userInfo: locals.userInfo }) %>
+
+    <style>
+      .container {
+        padding: 30px;
+      }
+    </style>
     
   	<div class="container">
-      广场首页
+      <div class="row">
+        <div class="col-md-6">
+          <%- include('./components/add-weibo') %>
+        </div>
+        <div class="col-md-offset-1 col-md-5">
+          右侧
+        </div>
+      </div>
+
     </div>
 
     <%- include('./components/footer') %>
