@@ -6,10 +6,20 @@
     "start": "node bin/www",
     "dev": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon bin/www",
     "prod": "cross-env NODE_ENV=prod pm2 start bin/www",
-    "precommit": "lint-staged && npm run lint",
     "lint": "eslint --ext .js ./src",
     "test": "npm run lint",
-    "jest": "cross-env NODE_ENV=test jest --runInBand --forceExit --colors"
+    "jest": "cross-env NODE_ENV=test jest --runInBand --forceExit --colors",
+    "sync": "node src/db/seqSync"
+  },
+  "comment": {
+    "scripts": "命令详解",
+    "start": "启动服务",
+    "dev": "热更新启动服务 开发环境",
+    "prod": "线上环境 pm2启动",
+    "lint": "eslint 代码检测",
+    "test": "eslint 代码检测",
+    "jest": "jest 单元测试",
+    "sync": "sequelize 建模 慎用"
   },
   "dependencies": {
     "@alicloud/pop-core": "^1.7.9",
