@@ -1,6 +1,6 @@
-<%- include('./components/header', { title: '个人设置' }) %>
+<%- include('../components/header', { title: '个人设置' }) %>
 
-<%- include('./components/nav', { userInfo: locals.userInfo }) %>
+<%- include('../components/nav', { userInfo: locals.userInfo }) %>
 
 <style>
 form {
@@ -71,7 +71,7 @@ form {
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 <script src="/js/lib/jquery.populateForm.js"></script>
 
-<%- include('./components/footer.ejs') %>
+<%- include('../components/footer.ejs') %>
 
 <script>
   $(function() {
