@@ -21,9 +21,16 @@ router.get('/register', async (ctx, next) => {
   })
 })
 
-// 个人设置页
+// 个人中心页
 router.get('/setting', checkLoginApiPage, async (ctx, next) => {
   await ctx.render('user/setting', {
+    userInfo: ctx.session.userInfo || {}
+  })
+})
+
+// 修改密码页
+router.get('/changePwd', checkLoginApiPage, async (ctx, next) => {
+  await ctx.render('user/changePwd', {
     userInfo: ctx.session.userInfo || {}
   })
 })

@@ -49,8 +49,8 @@ async function S_CreateUser({ userName, password, nickName, gender, provinceId, 
 
 /**
  * @description 删除用户
- * @param {string} userName 
- * @param {string} password 
+ * @param {string} userName 用户名
+ * @param {string} password 密码
  */
 async function S_DestroyUser(userName, password) {
   const result = await User.destroy({
@@ -62,8 +62,19 @@ async function S_DestroyUser(userName, password) {
   return result > 0
 }
 
+
+/**
+ * @description 修改用户信息
+ * @author zzw
+ * @param {string} userName 用户名
+ * @param {string} nickName 昵称
+ * @param {number} gender 性别
+ * @param {string} provinceId 省份id
+ * @param {string} cityId 城市id
+ * @param {string} headImg 头像地址
+ */
 async function S_UpdateUser({ userName, nickName, gender, provinceId, cityId, headImg }) {
-  let params = {
+  const params = {
     headImg,
     nickName,
     gender,
@@ -78,9 +89,30 @@ async function S_UpdateUser({ userName, nickName, gender, provinceId, cityId, he
   return result[0] > 0
 }
 
+/**
+ * @description 修改用户密码
+ * @author zzw
+ * @param {string} userName 用户名
+ * @param {string} password 旧密码
+ * @param {string} newPassword 新密码
+ */
+async function S_ChangeUserPwd(userName, password, newPassword) {
+  const params = {
+    password: doCrypto(newPassword),
+  }
+  const result = await User.update(params, {
+    where: {
+      userName,
+      password: doCrypto(password),
+    }
+  })
+  return result[0] > 0
+}
+
 module.exports = {
   S_GetUserInfo,
   S_CreateUser,
   S_DestroyUser,
-  S_UpdateUser
+  S_UpdateUser,
+  S_ChangeUserPwd,
 }

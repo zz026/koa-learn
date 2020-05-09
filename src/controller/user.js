@@ -1,16 +1,25 @@
 /**
  * @description user controller
  */
-const { S_GetUserInfo, S_CreateUser, S_DestroyUser, S_UpdateUser } = require('../service/user')
+// 返回模型
 const { SuccessModal, ErrorModal } = require('../model/ResponseModal')
+// service层
+const {
+  S_GetUserInfo,
+  S_CreateUser,
+  S_DestroyUser,
+  S_UpdateUser,
+  S_ChangeUserPwd,
+} = require('../service/user')
+// 错误code
 const {
   jsonErrorCode,
   hasUserNameCode,
   userNameErrorCode,
   userPsdErrorCode,
 } = require('../model/ErrorCode')
+// 加密
 const doCrypto = require('../utils/crypto')
-// const { set } = require('../cache/_redis')
 
 /**
 * @description 用户名是否存在
@@ -111,7 +120,7 @@ async function C_GetUserINfo(ctx) {
 
 /**
  * @description 更新用户信息
- * @author
+ * @author zzw
  */
 async function C_UpdateUser(ctx, { nickName, gender, provinceId, cityId, headImg }) {
   const { userName } = ctx.session.userInfo
@@ -126,6 +135,20 @@ async function C_UpdateUser(ctx, { nickName, gender, provinceId, cityId, headImg
   }
 }
 
+/**
+ * @description 修改用户密码
+ * @author zzw
+ */
+async function C_ChangeUserPwd(ctx, password, newPassword) {
+  const { userName } = ctx.session.userInfo
+  const result = await S_ChangeUserPwd(userName, password, newPassword)
+  if (result) {
+    return new SuccessModal()
+  } else {
+    return new ErrorModal(userPsdErrorCode)
+  }
+}
+
 module.exports = {
   C_CheckName,
   C_RegisterUser,
@@ -133,5 +156,6 @@ module.exports = {
   C_DeleteUser,
   C_LogoutUser,
   C_GetUserINfo,
-  C_UpdateUser
+  C_UpdateUser,
+  C_ChangeUserPwd
 }

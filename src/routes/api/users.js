@@ -10,7 +10,8 @@ const {
   C_DeleteUser,
   C_LogoutUser,
   C_GetUserINfo,
-  C_UpdateUser
+  C_UpdateUser,
+  C_ChangeUserPwd
 }
   = require('../../controller/user')
 const { checkLoginApi } = require('../../middlewares/checkLogin')
@@ -61,6 +62,12 @@ router.post('/getUserInfo', checkLoginApi, async (ctx, next) => {
 router.post('/update', checkLoginApi, getValidate(userValidate), async (ctx, next) => {
   const { nickName, gender, provinceId, cityId, headImg } = ctx.request.body
   ctx.body = await C_UpdateUser(ctx, { nickName, gender, provinceId, cityId, headImg  })
+})
+
+// 修改用户密码
+router.patch('/changePwd', checkLoginApi, getValidate(userValidate), async (ctx, next) => {
+  const { password, newPassword } = ctx.request.body
+  ctx.body = await C_ChangeUserPwd(ctx, password, newPassword)
 })
 
 module.exports = router
