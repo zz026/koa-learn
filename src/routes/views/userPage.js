@@ -22,8 +22,8 @@ router.get('/register', async (ctx, next) => {
 })
 
 // 个人中心页
-router.get('/setting', checkLoginApiPage, async (ctx, next) => {
-  await ctx.render('user/setting', {
+router.get('/userInfo', checkLoginApiPage, async (ctx, next) => {
+  await ctx.render('user/userInfo', {
     userInfo: ctx.session.userInfo || {}
   })
 })

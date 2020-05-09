@@ -25,12 +25,20 @@ router.get('/headList', async (ctx, next) => {
 
 // jsonp返回地区
 router.get('/area', async (ctx, next) => {
-  const res = await seq.query('SELECT * FROM `t_area`', { type: seq.QueryTypes.SELECT })
-  // 获取jsonp的callback
   const callbackName = ctx.query.callback || 'callback'
-  const returnData = {
-    code: 0,
-    data: res
+  let returnData = {}
+  try {
+    const res = await seq.query('SELECT * FROM `t_area`', { type: seq.QueryTypes.SELECT })
+    // 获取jsonp的callback
+    returnData = {
+      code: 0,
+      data: res
+    }
+  } catch(err) {
+    returnData = {
+      code: -1,
+      msg: err
+    }
   }
   // jsonp的script字符串
   const jsonpStr = `;${callbackName}(${JSON.stringify(returnData)})`

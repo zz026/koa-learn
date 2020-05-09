@@ -32,22 +32,6 @@
   }
 </style>
 
-<!-- <nav id="nav">
-  <div class="w clearfix">
-    <h1>仿微博</h1>
-    
-    <div class="right">
-      <div> <% if (locals.userInfo && locals.userInfo.userName) { %></div>
-        <img src="<%= locals.userInfo.headImg %>" id="headImg" />
-        <a href="/user/setting" class="nickName"><%= locals.userInfo.nickName %></a>
-        <a href="javascript:void(0)" id="logout">退出登录</a>
-      <div> <% } else { %></div>
-        <a href="/user/login">点击登录</a>
-      <div> <% } %></div>
-    </div>
-  </div>
-</nav> -->
-
 <nav class="navbar navbar-default" id="nav">
   <div class="container-fluid w">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -83,7 +67,7 @@
           <div> <% } %></div>
 
           <ul class="dropdown-menu">
-            <li><a href="/user/setting">个人中心</a></li>
+            <li><a href="/user/userInfo">个人中心</a></li>
             <li><a href="/user/changePwd">修改密码</a></li>
             <li id="logout"><a href="#">退出登录</a></li>
           </ul>
