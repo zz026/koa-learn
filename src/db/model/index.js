@@ -3,8 +3,10 @@
  * @author zzw
  */
 
-const User = require('./user')
+const User = require('./User')
+const Blogs = require('./Blogs')
 
 module.exports = {
-  User
+  User,
+  Blogs
 }
