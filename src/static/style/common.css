@@ -1,5 +1,6 @@
 body {
   font-size: 14px;
+  background-image: url('/image/body_bg.jpg');
 }
 /* 版心 */
 .w {
@@ -55,4 +56,8 @@ form .submit-btn {
 }
 form .submit-btn>.btn {
   width: 100%;
+}
+.btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:focus:active  {
+  background-color: #ff8140;
+  border-color: #ff8140;
 }

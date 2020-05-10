@@ -8,14 +8,32 @@
  * @param {object} obj 返回data
  */
 function formatData(obj) {
-  if (obj.createdAt) {
-    obj.createdAt = new Date(obj.createdAt).getTime()
-  }
-  if (obj.updatedAt) {
-    obj.updatedAt = new Date(obj.updatedAt).getTime()
-  }
-  if (obj.password) {
-    delete obj.password
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const element = obj[key];
+      // 对象
+      if (Object.prototype.toString.call(element) === '[object Object]') {
+        formatData(element)
+      }
+      // 数组，则循环调用
+      if (Array.isArray(element)) {
+        for (let index = 0; index < element.length; index++) {
+          formatData(element[index])
+        }
+      }
+      switch (key) {
+      // 返回时间戳
+      case 'createdAt':
+      case 'updatedAt':
+        obj[key] = new Date(element).getTime()
+        break;
+      // 不返回密码
+      case 'password':
+        delete obj[key]
+      default:
+        break;
+      }
+    }
   }
   return obj
 }

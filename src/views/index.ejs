@@ -5,9 +5,83 @@
     }) %>
 
     <%- include('./components/nav', { userInfo: locals.userInfo }) %>
+<<<<<<< HEAD
     
   	<div class="container">
       广场首页
     </div>
 
     <%- include('./components/footer') %>
+=======
+
+    <style>
+      .container {
+        padding: 30px;
+      }
+      #weibo-list {
+        margin-top: 50px;
+      }
+      #weibo-list .weibo-list-item {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 6px;
+        margin-bottom: 30px;
+      }
+      #weibo-list .weibo-list-item .headImg {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 20px;
+      }
+      #weibo-list .weibo-list-item .name {
+        line-height: 30px;
+      }
+      #weibo-list .weibo-list-item .time {
+        font-size: 13px;
+        color: #808080;
+      }
+      #weibo-list .weibo-list-item .content {
+        font-size: 14px;
+        margin-top: 10px;
+        margin-left: 10px;
+      }
+    </style>
+    
+  	<div class="container w">
+      <div class="row">
+        <div class="col-md-8">
+          <%- include('./components/add-weibo') %>
+
+          <div id="weibo-list">
+            <%- include('./components/weibo-list') %>
+          </div>
+        </div>
+        <div class="col-md-offset-1 col-md-3">
+          右侧
+        </div>
+      </div>
+
+    </div>
+
+    <%- include('./components/footer') %>
+
+
+    <script>
+      $(function() {
+        var pageIndex = 1
+        var pageSize = 20
+        function getWeiboList() {
+          ajax.get(
+            '/api/blogs/getList?pageIndex=' + pageIndex + '&pageSize=' + pageSize,
+            function(res) {
+            if (res.code === 0) {
+              console.log('res', res)
+            } else {
+              toastr.error(res.msg)
+            }
+          })
+        }
+        getWeiboList()
+      })
+    </script>
+>>>>>>> 2340ff3... 创建微博 查询微博列表
