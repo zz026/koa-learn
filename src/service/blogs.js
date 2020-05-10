@@ -39,6 +39,12 @@ async function S_GetBlogList({ userId, pageIndex = 1, pageSize = 10 }) {
     order: [ // 排序规则
       ['createdAt', 'desc']
     ],
+    include: [
+      {
+        model: User,
+        attributes: ['userName', 'nickName', 'headImg'],
+      }
+    ]
     // include: [ // 连表查
     //   {
     //     model: User,
