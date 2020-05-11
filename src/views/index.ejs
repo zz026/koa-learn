@@ -7,6 +7,9 @@
     <%- include('./components/nav', { userInfo: locals.userInfo }) %>
 
     <style>
+      body {
+        background-image: url('/image/body_bg.jpg');
+      }
       .container {
         padding: 30px;
       }
@@ -16,7 +19,7 @@
       #weibo-list .weibo-list-item {
         background-color: #fff;
         padding: 20px;
-        border-radius: 6px;
+        border-radius: 4px;
         margin-bottom: 30px;
       }
       #weibo-list .weibo-list-item .headImg {
@@ -36,6 +39,7 @@
         font-size: 14px;
         margin-top: 10px;
         margin-left: 10px;
+        word-wrap: break-word;
       }
     </style>
     
@@ -45,58 +49,7 @@
           <%- include('./components/add-weibo') %>
 
           <div id="weibo-list">
-            <%- include('./components/weibo-list') %>
-          </div>
-        </div>
-        <div class="col-md-offset-1 col-md-3">
-          右侧
-        </div>
-      </div>
-
-    </div>
-
-    <%- include('./components/footer') %>
-
-    <style>
-      .container {
-        padding: 30px;
-      }
-      #weibo-list {
-        margin-top: 50px;
-      }
-      #weibo-list .weibo-list-item {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 6px;
-        margin-bottom: 30px;
-      }
-      #weibo-list .weibo-list-item .headImg {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 20px;
-      }
-      #weibo-list .weibo-list-item .name {
-        line-height: 30px;
-      }
-      #weibo-list .weibo-list-item .time {
-        font-size: 13px;
-        color: #808080;
-      }
-      #weibo-list .weibo-list-item .content {
-        font-size: 14px;
-        margin-top: 10px;
-        margin-left: 10px;
-      }
-    </style>
-    
-  	<div class="container w">
-      <div class="row">
-        <div class="col-md-8">
-          <%- include('./components/add-weibo') %>
-
-          <div id="weibo-list">
-            <%- include('./components/weibo-list') %>
+            <!-- <%- include('./components/weibo-list') %> -->
           </div>
         </div>
         <div class="col-md-offset-1 col-md-3">
@@ -118,6 +71,23 @@
             function(res) {
             if (res.code === 0) {
               console.log('res', res)
+              var text = ''
+              $.map(res.data.items, function(val) {
+                var user = val.t_user
+                text += '' +
+                  '<div class="weibo-list-item">' +
+                    '<div class="clearfix">' +
+                      '<img src=' + user.headImg + ' alt="用户头像" class="headImg" style="float: left;" />' +
+                      '<div style="float: left;">' +
+                        '<div class="name">' + user.nickName + ' </div>' +
+                        '<div class="time">发布时间: ' + val.createdAt + '</div>' +
+                      '</div>' +
+                    '</div>' +
+                    '<div class="content">' + val.content +'</div>' +
+                    (val.image ? '<img src='+ val.image +' style="width:200px;height:200px;margin-top:10px;border-radius:4px;" />' : '') +
+                  '</div>'
+                })
+              $('#weibo-list').html(text)
             } else {
               toastr.error(res.msg)
             }

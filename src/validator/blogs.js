@@ -10,10 +10,11 @@ const Schema = {
   properties: {
     content: {
       type: 'string',
+      maxLength: 255
     },
     image: {
       type: 'string',
-      maxLength:255
+      maxLength: 255
     },
   }
 }

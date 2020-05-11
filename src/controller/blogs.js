@@ -21,7 +21,7 @@ async function C_CreateBlog({ userId, content, image }) {
     const blog = await S_CreateBlog({ userId, content, image })
     return new SuccessModal(blog)
   } catch(e) {
-    return ErrorModal({
+    return new ErrorModal({
       msg: e
     })
   }

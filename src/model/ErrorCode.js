@@ -26,5 +26,9 @@ module.exports = {
   bigSizeCode: {
     code: 10006,
     msg: '文件过大'
+  },
+  errorFileTypeCode: {
+    code: 10007,
+    msg: '文件格式错误,仅支持jpg、png、bmp、jpeg格式'
   }
 }
