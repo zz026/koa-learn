@@ -70,13 +70,31 @@
             $(form).find('.btn-submit').attr('disabled', false)
             $(form).find('textarea[name="content"]').val('')
             $(form).find('.img').attr('src', '')
+            // 增加微博 不请求
+            addBlog(res.data)
           } else {
             $(form).find('.btn-submit').attr('disabled', false)
             toastr.error(res.msg)
           }
         })
 			}, 
-		});
+    });
+    
+    // 增加微博
+    function addBlog(val) {
+      var text = '<div class="weibo-list-item">' +
+        '<div class="clearfix">' +
+          '<img src=' + val.headImg + ' alt="用户头像" class="headImg" style="float: left;" />' +
+          '<div style="float: left;">' +
+            '<div class="name">' + val.nickName + ' </div>' +
+            '<div class="time">发布时间: ' + val.createdAt + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="content">' + val.content +'</div>' +
+        (val.image ? '<img src='+ val.image +' style="width:200px;height:200px;margin-top:10px;border-radius:4px;" />' : '') +
+      '</div>'
+      $("#weibo-list").prepend(text);
+    }
 
   })
 </script>

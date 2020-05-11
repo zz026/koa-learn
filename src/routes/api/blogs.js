@@ -19,9 +19,9 @@ router.prefix('/api/blogs')
 // 创建微博
 router.post('/create', checkLoginApi, getValidate(blogValidate), async (ctx, next) => {
   const { content, image } = ctx.request.body
-  const { id: userId } = ctx.session.userInfo
+  const userInfo = ctx.session.userInfo
   ctx.body = await C_CreateBlog({
-    userId,
+    userInfo,
     content: xss(content),
     image
   })

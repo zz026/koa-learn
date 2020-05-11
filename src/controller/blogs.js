@@ -16,10 +16,15 @@ const {
  * @param {string} content 微博内容
  * @param {string} image 图片
  */
-async function C_CreateBlog({ userId, content, image }) {
+async function C_CreateBlog({ userInfo, content, image }) {
   try {
+  const { id: userId } = userInfo
     const blog = await S_CreateBlog({ userId, content, image })
-    return new SuccessModal(blog)
+    return new SuccessModal({
+      ...blog,
+      nickName: userInfo.nickName,
+      headImg: userInfo.headImg
+    })
   } catch(e) {
     return new ErrorModal({
       msg: e
