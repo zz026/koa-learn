@@ -18,7 +18,7 @@ const {
  */
 async function C_CreateBlog({ userInfo, content, image }) {
   try {
-  const { id: userId } = userInfo
+    const { id: userId } = userInfo
     const blog = await S_CreateBlog({ userId, content, image })
     return new SuccessModal({
       ...blog,
