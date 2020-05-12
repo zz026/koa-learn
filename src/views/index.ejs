@@ -80,11 +80,11 @@
                       '<img src=' + user.headImg + ' alt="用户头像" class="headImg" style="float: left;" />' +
                       '<div style="float: left;">' +
                         '<div class="name">' + user.nickName + ' </div>' +
-                        '<div class="time">发布时间: ' + val.createdAt + '</div>' +
+                        '<div class="time">发布时间: ' + $utils.parseTime(val.createdAt) + '</div>' +
                       '</div>' +
                     '</div>' +
                     '<div class="content">' + val.content +'</div>' +
-                    (val.image ? '<img src='+ val.image +' style="width:200px;height:200px;margin-top:10px;border-radius:4px;" />' : '') +
+                    (val.image ? '<img src='+ val.image +' style="width:150px;height:150px;margin-top:10px;border-radius:4px;" />' : '') +
                   '</div>'
                 })
               $('#weibo-list').html(text)

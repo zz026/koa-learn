@@ -22,8 +22,7 @@ class SuccessModal extends BaseModal {
   constructor(data = {}) {
     super({
       code: 0,
-      data,
-      // data: formatData(data),
+      data: formatData(data),
       msg: '操作成功'
     })
   }
