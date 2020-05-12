@@ -1,0 +1,100 @@
+<style>
+  #add-weibo-form .add-image {
+    margin: 0 20px;
+    padding: 4px 10px;
+    background-color: #fff;
+    color:#1296db;
+    cursor: pointer;
+  }
+  #add-weibo-form .img {
+    width: 60px;
+    height: 60px;
+    border: 1px dashed #e4e4e4;
+    vertical-align: middle;
+  }
+  #add-weibo-form .btn-submit {
+    width: 100px;
+  }
+</style>
+<form id="add-weibo-form">
+  <div class="form-group">
+    <textarea class="form-control" rows="4" name="content"></textarea>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary btn-submit">发布</button>
+    <span class="btn add-image">
+      <i class="iconfont">&#xe643;</i>
+      &nbsp;上传图片
+    </span>
+    <img class="img" src="" alt="">
+    <input type="file" style="display:none;" accept="image/*">
+  </div>
+</form>
+
+<script>
+  $(function() {
+    $('#add-weibo-form .add-image').click(function() {
+      $('#add-weibo-form input[type="file"]').click()
+    })
+
+    $('#add-weibo-form input[type="file"]').change(function() {
+      var file = $(this)[0].files[0]
+      ajax.upload('/api/utils/upload', file, function(res) {
+        if (res.code === 0) {
+          $('#add-weibo-form .img').attr('src', res.data)
+        } else {
+          toastr.error(res.msg)
+        }
+      })
+    })
+
+    	// 表单验证
+		$("#add-weibo-form").validate({
+			debug: true, // 调试模式取消submit的默认提交功能   
+			rules: {
+				content: {
+					required: true, // 必填项
+				},
+			},
+			submitHandler: function(form){ 
+        var content = $(form).find('textarea[name="content"]').val()
+        var image = $(form).find('.img').attr('src')
+        // 按钮禁用
+        $(form).find('.btn-submit').attr('disabled', true)
+        ajax.post('/api/blogs/create', {
+          content,
+          image
+        }, function(res) {
+          if (res.code === 0) {
+            toastr.success('发布成功！');
+            $(form).find('.btn-submit').attr('disabled', false)
+            $(form).find('textarea[name="content"]').val('')
+            $(form).find('.img').attr('src', '')
+            // 增加微博 不请求
+            addBlog(res.data)
+          } else {
+            $(form).find('.btn-submit').attr('disabled', false)
+            toastr.error(res.msg)
+          }
+        })
+			}, 
+    });
+    
+    // 增加微博
+    function addBlog(val) {
+      var text = '<div class="weibo-list-item">' +
+        '<div class="clearfix">' +
+          '<img src=' + val.headImg + ' alt="用户头像" class="headImg" style="float: left;" />' +
+          '<div style="float: left;">' +
+            '<div class="name">' + val.nickName + ' </div>' +
+            '<div class="time">发布时间: ' + val.createdAt + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="content">' + val.content +'</div>' +
+        (val.image ? '<img src='+ val.image +' style="width:200px;height:200px;margin-top:10px;border-radius:4px;" />' : '') +
+      '</div>'
+      $("#weibo-list").prepend(text);
+    }
+
+  })
+</script>

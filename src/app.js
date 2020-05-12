@@ -17,8 +17,9 @@ const redisStore = require('koa-redis')
 const { REDIS_CONF } = require('./conf/db')
 // api路由
 const index = require('./routes/index')
-const users = require('./routes/api/users')
-const utils = require('./routes/api/utils')
+const usersApi = require('./routes/api/users')
+const utilsApi = require('./routes/api/utils')
+const blogsApi = require('./routes/api/blogs')
 // jsonp
 const jsonpRouter = require('./routes/api/jsonp')
 
@@ -73,8 +74,9 @@ app.use(session({
 // routes
 // api
 app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
-app.use(utils.routes(), utils.allowedMethods())
+app.use(usersApi.routes(), usersApi.allowedMethods())
+app.use(utilsApi.routes(), utilsApi.allowedMethods())
+app.use(blogsApi.routes(), blogsApi.allowedMethods())
 // jsonp
 app.use(jsonpRouter.routes(), jsonpRouter.allowedMethods())
 // pages

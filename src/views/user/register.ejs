@@ -84,9 +84,6 @@
 </div>
 <%- include('../components/footer.ejs') %>
 
-<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
-<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
-
 <script>
 	$(function () {
 		var provinceList = []
@@ -225,9 +222,9 @@
 					if (res.code === 0) {
 						var text = '<option label="请选择省份" value=""></option>'
 						res.data.forEach(function(val) {
-							if (val.pid === 0) {
+							if (val.type === 1) {
 								provinceList.push(val)
-							} else {
+							} else if (val.type === 2) {
 								cityList.push(val)
 							}
 						})

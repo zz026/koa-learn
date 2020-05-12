@@ -8,7 +8,7 @@ form {
   margin: 0 auto;
   padding: 30px;
 }
-#setting-form-headImg {
+#userInfo-form-headImg {
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -20,9 +20,9 @@ form {
 </style>
 
 <div class="container">
-  <form id="setting-form">
+  <form id="userInfo-form">
     <div class="form-group" style="text-align:center;margin-bottom:20px;">
-      <img src="<%- locals.userInfo.headImg %>" alt="头像" id="setting-form-headImg" >
+      <img src="<%- locals.userInfo.headImg %>" alt="头像" id="userInfo-form-headImg" >
       <input type="file" accept="image/*" id="upload-input" style="display: none;">
       <div ><%- locals.userInfo.userName %></div>
     </div>
@@ -79,7 +79,7 @@ form {
     var cityList = []
 
     // 增加表单验证
-    $("#setting-form").validate({
+    $("#userInfo-form").validate({
       debug: true, // 调试模式取消submit的默认提交功能   
       rules: {
         nickName: {
@@ -97,7 +97,7 @@ form {
         },
       },
       submitHandler: function(form){
-        var headImg = $('#setting-form-headImg').attr('src')
+        var headImg = $('#userInfo-form-headImg').attr('src')
         var nickName = $('input[name=nickName]').val()
         var gender = $('input[name=gender]:checked').val()
         var provinceId = $('#pro-select').val()
@@ -121,7 +121,7 @@ form {
       }, 
     });
 
-    $('#setting-form-headImg').click(function() {
+    $('#userInfo-form-headImg').click(function() {
       $('#upload-input').click()
     })
     
@@ -131,7 +131,7 @@ form {
       ajax.upload('/api/utils/upload', file, function(res) {
         console.log('res', res)
         if (res.code === 0) {
-          $('#setting-form-headImg').attr('src', res.data)
+          $('#userInfo-form-headImg').attr('src', res.data)
         } else {
           toastr.error(res.msg)
         }
@@ -142,7 +142,7 @@ form {
     function getInfo() {
       ajax.post('/api/user/getUserInfo', function(res) {
         if (res.code === 0) {
-          $('#setting-form').populateForm(res.data);
+          $('#userInfo-form').populateForm(res.data);
           // 手动调用省份获取相应市
           $("#pro-select").trigger("change");
           $("#city-select").val(res.data.cityId);
@@ -161,9 +161,9 @@ form {
 					if (res.code === 0) {
 						var text = '<option label="请选择省份" value=""></option>'
 						res.data.forEach(function(val) {
-							if (val.pid === 0) {
+              if (val.type === 1) {
 								provinceList.push(val)
-							} else {
+							} else if (val.type === 2) {
 								cityList.push(val)
 							}
 						})

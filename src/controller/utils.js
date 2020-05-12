@@ -4,8 +4,8 @@
  */
 const fsExtra = require('fs-extra')
 const { SuccessModal, ErrorModal } = require('../model/ResponseModal')
-const { bigSizeCode } = require('../model/ErrorCode')
-const { parseTime } = require('../utils/index')
+const { bigSizeCode, errorFileTypeCode } = require('../model/ErrorCode')
+const { generateRandomString } = require('../utils/index')
 const { RESOURCE_PATH } = require('../conf/savePath')
 const path = require('path')
 // 最大体积10M
@@ -34,14 +34,20 @@ async function C_SaveFile({ name, type, size, filePath }) {
     return new ErrorModal(bigSizeCode)
   }
 
-  // 重新定义文件名，防止重复
-  const fileName = parseTime(Date.now(), 'yyyyMMdd-HHmmss') + '.' + name
-  // // 存储目的地
-  const distFilePath = path.join(RESOURCE_PATH, fileName)
-  // 移动文件
-  await fsExtra.move(filePath, distFilePath)
+  let fileSuffix = name.match(/.(jpg|png|bmp|jpeg)\b/g)
+  fileSuffix = fileSuffix ? fileSuffix[0] : ''
+  if (['.jpg', '.png', '.bmp', 'jpeg'].includes(fileSuffix)) {
+    // 重新定义文件名，防止重复
+    const fileName = 'weibo-' + generateRandomString(30) + fileSuffix
+    // // 存储目的地
+    const distFilePath = path.join(RESOURCE_PATH, fileName)
+    // 移动文件
+    await fsExtra.move(filePath, distFilePath)
+    return new SuccessModal('/' + fileName)
+  } else {
+    return new ErrorModal(errorFileTypeCode)
+  }
   
-  return new SuccessModal('/' + fileName)
 }
 
 module.exports = {
