@@ -39,21 +39,13 @@ async function S_GetBlogList({ userId, pageIndex = 1, pageSize = 10 }) {
     order: [ // 排序规则
       ['createdAt', 'desc']
     ],
+    // 连表查
     include: [
       {
         model: User,
         attributes: ['userName', 'nickName', 'headImg'],
       }
     ]
-    // include: [ // 连表查
-    //   {
-    //     model: User,
-    //     attributes: ['nickName'],
-    //     where: {
-    //       userName
-    //     }
-    //   }
-    // ],
   })
   const { count, rows: items } = list
   return {
