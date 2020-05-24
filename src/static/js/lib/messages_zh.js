@@ -1,4 +1,3 @@
-/* eslint-disable no-new */
 (function( factory ) {
 	if ( typeof define === 'function' && define.amd ) {
 		define( ['jquery', './jquery.validate.min'], factory );
