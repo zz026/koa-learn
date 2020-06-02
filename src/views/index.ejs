@@ -41,6 +41,45 @@
         margin-left: 10px;
         word-wrap: break-word;
       }
+      .box-shadow {
+        box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+      }
+      #right-box {
+        background-color: #fff;
+        /* height: 300px; */
+        border-radius: 4px;
+        padding: 40px 10px;
+      }
+      #right-box .headImg {
+        text-align: center;
+      }
+      #right-box .headImg img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 1px solid #e4e4e4;
+      }
+      #right-box .headImg .name {
+        font-size: 20px;
+        margin-top: 6px;
+      }
+      #right-box .count>div {
+        margin-top: 30px;
+        width: 33.33%;
+        float: left;
+        border-right: 1px solid #ccc;
+        font-size: 16px;
+      }
+      #right-box .count>div:last-of-type {
+        border-right: 0;
+      }
+      #right-box .count>div strong {
+        display: inline-block;
+        font-size: 30px;
+        font-weight: 600;
+        color: #fa2f2f;
+        margin-bottom: 6px;
+      }
     </style>
     
   	<div class="container w">
@@ -48,13 +87,33 @@
         <div class="col-md-8">
           <%- include('./components/add-weibo') %>
 
-          <div id="weibo-list">
-            <!-- <%- include('./components/weibo-list') %> -->
+          <div id="weibo-list"></div>
+        </div>
+        <div class="col-md-4">
+          <div id="right-box" class="box-shadow">
+            <% if (locals.userInfo && locals.userInfo.userName) { %>
+              <div class="headImg">
+                <img src="<%= locals.userInfo.headImg %>" class="box-shadow" />
+                <div class="name"><%= locals.userInfo.nickName %></div>
+                <div class="count clearfix">
+                  <div>
+                    <strong id="followCount">0</strong>
+                    <div>关注</div>
+                  </div>
+                  <div>
+                    <strong id="fansCount">0</strong>
+                    <div>粉丝</div>
+                  </div>
+                  <div>
+                    <strong id="weiboCount">0</strong>
+                    <div>微博</div>
+                  </div>
+                </div>
+              </div>
+            <% } else { %>
+              <div>点击登录</div>
+            <% } %>
           </div>
-        </div>
-        <div class="col-md-offset-1 col-md-3">
-          右侧
-        </div>
       </div>
 
     </div>
@@ -75,7 +134,7 @@
               $.map(res.data.items, function(val) {
                 var user = val.t_user
                 text += '' +
-                  '<div class="weibo-list-item">' +
+                  '<div class="weibo-list-item box-shadow">' +
                     '<div class="clearfix">' +
                       '<img src=' + user.headImg + ' alt="用户头像" class="headImg" style="float: left;" />' +
                       '<div style="float: left;">' +
@@ -93,6 +152,17 @@
             }
           })
         }
+
+        function getAllCount() {
+          ajax.get('/api/user/count', function(res) {
+            if (res.code === 0) {
+              console.log(res.data)
+              $('#weiboCount').html(res.data.weiboCount)
+            }
+          })
+        }
+
         getWeiboList()
+        getAllCount()
       })
     </script>

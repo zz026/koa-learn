@@ -3,7 +3,7 @@
  * @author zzw
  */
 
-const { User } = require('../db/model/index')
+const { User, Blogs } = require('../db/model')
 const doCrypto = require('../utils/crypto')
 
 /**
@@ -109,10 +109,26 @@ async function S_ChangeUserPwd(userName, password, newPassword) {
   return result[0] > 0
 }
 
+/**
+ * @description 获取用户关注数 粉丝数 微博数
+ * @author zzw
+*/
+async function S_GetUserCount(userId) {
+  const weiboCount = await Blogs.count({
+    where: {
+      userId
+    }
+  })
+  return {
+    weiboCount
+  }
+}
+
 module.exports = {
   S_GetUserInfo,
   S_CreateUser,
   S_DestroyUser,
   S_UpdateUser,
   S_ChangeUserPwd,
+  S_GetUserCount
 }

@@ -11,7 +11,8 @@ const {
   C_LogoutUser,
   C_GetUserINfo,
   C_UpdateUser,
-  C_ChangeUserPwd
+  C_ChangeUserPwd,
+  C_GetUserCount
 }
   = require('../../controller/user')
 const { checkLoginApi } = require('../../middlewares/checkLogin')
@@ -68,6 +69,10 @@ router.post('/update', checkLoginApi, getValidate(userValidate), async (ctx, nex
 router.patch('/changePwd', checkLoginApi, getValidate(userValidate), async (ctx, next) => {
   const { password, newPassword } = ctx.request.body
   ctx.body = await C_ChangeUserPwd(ctx, password, newPassword)
+})
+
+router.get('/count', checkLoginApi, async(ctx, next) => {
+  ctx.body = await C_GetUserCount(ctx)
 })
 
 module.exports = router

@@ -10,6 +10,7 @@ const {
   S_DestroyUser,
   S_UpdateUser,
   S_ChangeUserPwd,
+  S_GetUserCount
 } = require('../service/user')
 // 错误code
 const {
@@ -149,6 +150,20 @@ async function C_ChangeUserPwd(ctx, password, newPassword) {
   }
 }
 
+/**
+ * @description 获取用户关注数 粉丝数 微博数
+ * @author zzw
+*/
+async function C_GetUserCount(ctx) {
+  const { id } = ctx.session.userInfo
+  const result = await S_GetUserCount(id)
+  if (result) {
+    return new SuccessModal(result)
+  } else {
+    return new ErrorModal()
+  }
+}
+
 module.exports = {
   C_CheckName,
   C_RegisterUser,
@@ -157,5 +172,6 @@ module.exports = {
   C_LogoutUser,
   C_GetUserINfo,
   C_UpdateUser,
-  C_ChangeUserPwd
+  C_ChangeUserPwd,
+  C_GetUserCount
 }
